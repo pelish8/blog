@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script type="text/javascript" src="{{resurse}}/js/jquery-2.0.0.min.js"></script>
+        <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
+        <script type="text/javascript" src="{{resurse}}/js/register.js"></script>
+        <link href="{{resurse}}/css/default.css" rel="stylesheet" type="text/css">
+        <link href="{{resurse}}/css/register.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript">
+        $(document).ready(function ($) {
+            var errorMessage = new App.message.Error();
+            
+            $('.js-button-click').click(function () {
+                var button = $(this).attr('disabled', 'disabled'),
+                    name = $('.js-name').val(),
+                    email = $('.js-email').val(),
+                    password = $('.js-password').val(),
+                    confirmPassword = $('.js-confirm-password').val(),
+                    hasError = false;
+                
+                errorMessage.hide();
+                if (name.length === 0) {
+                    errorMessage.addMessage('Name must have at least 3 characters.');
+                    hasError = true;                    
+                }
+                
+                if (!App.validate.email(email)) {
+                    errorMessage.addMessage('Invalid email address.');
+                    hasError = true;
+                }
+                if (password.length === 0 || password !== confirmPassword) {
+                    errorMessage.addMessage('Passwords do not match.');
+                    hasError = true;
+                } else if (password.length < 6) {
+                    errorMessage.addMessage('Password should have at least 6 characters.');
+                    hasError = true;
+                }
+                if (hasError) {
+                    errorMessage.show();
+                    button.removeAttr('disabled');
+                    return;
+                }
+                
+                $.ajax({
+                    type: 'POST',
+                    url: '{{api}}/register',
+                    data: {
+                        name: name,
+                        email: email,
+                        password: password,
+                        confirmPassword: confirmPassword
+                    },
+                    success: function (data, status, request) {
+                        if (data.status === 'ok') {
+                            document.location = '/login';
+                        } else if (data.reason === 'user-exists') {
+                            errorMessage.show('Sorry, email address ' + $('.js-email').val() + ' is already in use.');
+                        } else {
+                            errorMessage.show('Error Sending Data.');
+                        }
+                        button.removeAttr('disabled');
+                    },
+                    error: function () {
+                        button.removeAttr('disabled');
+                        errorMessage.show('Error Sending Data.');
+                    }
+                });
+            });
+        });
+        </script>
+        
+    </head>
+    <body>
+        <div id="content">
+            <div class="register-form">
+                <h1>Registration</h1>
+                <input type="text" name="name" placeholder="Name" class="first js-name">
+                <input type="email" placeholder="Email" class="js-email">
+                <input type="password" placeholder="Password" class="js-password">
+                <input type="password" placeholder="Confirm" class="last js-confirm-password">
+                <button class="js-button-click">Register and start blogging</button>
+                <a href="/login" class="login-link">Go To Log In Page</a>
+            </div>
+        </div>
+    </body>
+</html>

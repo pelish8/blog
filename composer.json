@@ -1,0 +1,20 @@
+{
+    "name": "aleksandar.stevic/cms",
+    "authors": [
+        {
+            "name": "Aleksandar Stevic",
+            "email": "astevic@me.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "2.*",
+        "slim/extras": "*",
+         "twig/twig": "1.*"
+    },
+    "autoload": {
+            "psr-0": {
+                "pelish8\\": "lib/"
+            }
+        }
+    
+}

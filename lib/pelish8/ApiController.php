@@ -21,9 +21,7 @@ abstract class ApiController
         try {
             $response = "";
             
-            if (!Session::sharedSession()->isLogIn()) {
-                return $this->errorResponse(self::ACCESS_DENIED);
-            } else if (method_exists($this, $action)) {
+            if (method_exists($this, $action)) {
                 $response = $this->$action();
             } else {
                 return $this->errorResponse(self::NOT_FOUND);

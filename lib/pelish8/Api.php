@@ -56,6 +56,9 @@ class Api extends \pelish8\ApiController
      */
     public function create()
     {
+        if (!Session::sharedSession()->isLogIn()) {
+            return $this->errorResponse(self::ACCESS_DENIED);
+        }
         $post = $this->getPost('title', 'article', 'tags');
         $status = Db::sharedDb()->createArticle($post['title'], $post['article'], $post['tags']);
         

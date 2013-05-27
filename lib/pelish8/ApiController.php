@@ -28,8 +28,12 @@ abstract class ApiController
             }
 
         } catch (\Exception $e) {
+            echo $e->getMessage();
             $response = $this->errorResponse(self::NOT_FOUND);
-        } catch (\PostException $e) {
+        } catch (\PostException $e) { // @TO_DO implement
+            echo $e->getMessage();
+            $response = $this->errorResponse(self::INVALID_PARAMS);
+        } catch (\GetException $e) { // @TO_DO implement
             $response = $this->errorResponse(self::INVALID_PARAMS);
         }
 
@@ -77,9 +81,17 @@ abstract class ApiController
      */
     protected function getPost()
     {
-        return $_POST;
+        return $_POST; // @TO_DO implement
     }
-
+    
+    /**
+     *
+     *
+     */
+    protected function getGet()
+    {
+        return $_GET; // @TO_DO implement
+    }
 
     /**
      *

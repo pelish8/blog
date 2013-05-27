@@ -17,6 +17,8 @@ class Db extends \PDO
                                             Configuration::DB_USER_NAME,
                                             Configuration::DB_PASSWORD,
                                             [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']);
+
+            static::$instance->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
         }
 
         return static::$instance;
@@ -99,25 +101,62 @@ class Db extends \PDO
     protected function addTags($tags, $articleId)
     {
         // clean string
+        $tags = trim($tags);
+        $tags = preg_replace('!\s+!', ' ', $input);
         $tags = preg_replace('/[^A-Za-z0-9\_\- ]/', '', $tags);
 
         $query = $this->prepare('INSERT IGNORE INTO tags (id, tag) VALUES(:id, :tag)');
 
         $queryRelationship = $this->prepare('INSERT IGNORE INTO article_tag (article_id, tag_id) VALUES(:article_id, :tag_id)');
-        $queryRelationship->bindValue(':article_id', $articleId);
+        $queryRelationship->bindValue(':article_id', $articleId, \PDO::PARAM_INT);
+        
+        $queryTag = $this->prepare('SELECT id FROM tags WHERE tag=:tag');
 
         $tagArray = explode(' ', $tags);
         $count = count($tagArray);
 
-        if ($count > 0) {
+        if ($count > 0) { // @TO_DO find better solution
             foreach ($tagArray as $tag) {
-                $id = $this->uniqId();
-                $query->bindValue(':id', $id);
-                $query->bindValue(':tag', $tag);
-                $query->execute();
-                $queryRelationship->bindValue(':tag_id', $id);
+
+                $queryTag->bindValue(':tag', $tag);
+                $queryTag->execute();
+                $result = $queryTag->fetch(\PDO::FETCH_ASSOC);
+
+                if (!isset($result['id'])) {
+                    $id = $this->uniqId();
+                    $query->bindValue(':id', $id, \PDO::PARAM_INT);
+                    $query->bindValue(':tag', $tag, \PDO::PARAM_INT);
+                    $query->execute();
+                } else {
+                    $id =$result['id'];
+                }
+                
+                $queryRelationship->bindValue(':tag_id', $id, \PDO::PARAM_STR);
                 $queryRelationship->execute();
             }
-         }
+        }
+    }
+    
+    public function articles($pageNumber, $pageSize)
+    {
+        $sql = 'SELECT articles.*, GROUP_CONCAT(tags.tag ORDER BY tags.tag) AS tags, users.name AS name
+                FROM articles 
+                LEFT JOIN article_tag ON article_tag.article_id = articles.id 
+                LEFT JOIN tags ON tags.id = article_tag.tag_id
+                LEFT JOIN users ON users.id = articles.user_id
+                GROUP BY articles.id LIMIT :start, :end';
+
+        $query = $this->prepare($sql);
+        $pageNumber -= 1;
+        $d = $pageNumber * $pageSize;
+        $query->bindParam(':start', $d, \PDO::PARAM_INT);
+        $query->bindParam(':end', $pageSize, \PDO::PARAM_INT);
+        $query->execute();
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+        if ($result) {
+            return $result;
+        }
+        
+        return [];
     }
 }

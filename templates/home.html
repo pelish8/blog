@@ -7,7 +7,28 @@
         <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
         <link href="{{resurse}}/css/default.css" rel="stylesheet" type="text/css">
         <script type="text/javascript">
-
+            $.ajax({
+                type: 'GET',
+                url: '{{api}}/articles',
+                data: {
+                    pageNumber: 1,
+                    pageSize: 10
+                },
+                success: function (data, status, request) {
+                    // if (data.status === 'ok') {
+                    //     document.location = '/login';
+                    // } else if (data.reason === 'user-exists') {
+                    //     errorMessage.show('Sorry, email address ' + $('.js-email').val() + ' is already in use.');
+                    // } else {
+                    //     errorMessage.show('Error Sending Data.');
+                    // }
+                    // button.removeAttr('disabled');
+                },
+                error: function () {
+                    // button.removeAttr('disabled');
+                    // errorMessage.show('Error Sending Data.');
+                }
+            });
         </script>
     </head>
     <body>

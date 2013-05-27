@@ -68,4 +68,20 @@ class Api extends \pelish8\ApiController
         
         return $this->errorResponse(self::ERROR_SENDIND_DATA);
     }
+    
+    /**
+     *
+     *
+     */
+    public function articles()
+    {
+        $get = $this->getGet('pageSize', 'pageNumber');
+        $result = Db::sharedDb()->articles($get['pageNumber'], $get['pageSize']);
+        
+        if (count($result) > 0) {        
+            return $this->succesResponse($result);
+        }
+        
+        return $this->errorResponse(self::INVALID_CREDENTIALS);
+    }
 }

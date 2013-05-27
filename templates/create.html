@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Create</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <script type="text/javascript" src="{{resurse}}/js/jquery-2.0.0.min.js"></script>
         <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
@@ -16,6 +17,17 @@
                         tags = $('.js-tags').val(),
                         hasError = false;
                     errorMessage.hide();
+                    if (title.length === 0) {
+                        errorMessage.addMessage('Title must have at least 1 characters.');
+                        hasError = true;
+                    }
+
+                    if (hasError) {
+                        errorMessage.show();
+                        button.removeAttr('disabled');
+                        return;
+                    }
+
                     $.ajax({
                         type: 'POST',
                         url: '{{api}}/create',
@@ -25,14 +37,13 @@
                             tags: tags
                         },
                         success: function (data, status, request) {
-                            console.log(data);
-                            // if (data.status === 'ok') {
-                            //     document.location = '/login';
-                            // } else if (data.reason === 'user-exists') {
-                            //     errorMessage.show('Sorry, email address ' + $('.js-email').val() + ' is already in use.');
-                            // } else {
-                            //     errorMessage.show('Error Sending Data.');
-                            // }
+                            if (data.status === 'ok') {
+                                window.location = '/';
+                            } else if (data.reason === 'access-denied') {
+                                window.location = '/login';
+                            } else {
+                                errorMessage.show('Error Sending Data.');
+                            }
                             button.removeAttr('disabled');
                         },
                         error: function () {
@@ -40,6 +51,10 @@
                             errorMessage.show('Error Sending Data.');
                         }
                     });
+                });
+
+                $('.js-cancel-button-click').click(function () {
+                    window.location = '/';
                 });
             });
         </script>
@@ -53,6 +68,7 @@
                 <div class="info">Separate tags with space.</div>
                 <input type="text" class="article-tags js-tags" placeholder="Tags...">
                 <button class="js-save-button-click">Save</button>
+                <button class="js-cancel-button-click">Cancel</button>
             </div>
         </div>
     </body>

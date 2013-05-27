@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Log In</title>
         <script type="text/javascript" src="{{resurse}}/js/jquery-2.0.0.min.js"></script>
         <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
         <script type="text/javascript" src="{{resurse}}/js/login.js"></script>
@@ -14,19 +15,19 @@
                         email = $('.js-email').val(),
                         password = $('.js-password').val(),
                         hasError = false;
-                        
+
                     errorMessage.hide();
                     if (!App.validate.email(email)) {
                         errorMessage.addMessage('Please provide a valid email address.');
                         hasError = true;
                     }
-                    
+
                     if (hasError) {
                         errorMessage.show();
                         button.removeAttr('disabled');
                         return;
                     }
-                    
+
                     $.ajax({
                         type: 'POST',
                         url: '{{api}}/login',
@@ -49,7 +50,7 @@
                             // errorMessage.show('Error Sending Data.');
                         }
                     });
-                    
+
                 });
             });
         </script>

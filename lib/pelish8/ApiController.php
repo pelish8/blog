@@ -11,7 +11,7 @@ abstract class ApiController
     const ERROR_SENDIND_DATA = 'error-sending-data';
     const INVALID_PARAMS = 'invalid-params';
     const INVALID_CREDENTIALS = 'invalid-credentials';
-    
+
     /**
      *
      *
@@ -20,17 +20,19 @@ abstract class ApiController
     {
         try {
             $response = "";
-            
+
             if (method_exists($this, $action)) {
                 $response = $this->$action();
             } else {
-                return $this->errorResponse(self::NOT_FOUND);
+                $response = $this->errorResponse(self::NOT_FOUND);
             }
-            
+
         } catch (\Exception $e) {
+            $response = $this->errorResponse(self::NOT_FOUND);
+        } catch (\PostException $e) {
             $response = $this->errorResponse(self::INVALID_PARAMS);
         }
-        
+
         $this->processResponse($response);
     }
 
@@ -41,11 +43,11 @@ abstract class ApiController
     public function succesResponse($result = null)
     {
         $response = ['status' => 'ok'];
-        
+
         if ($result !== null) {
             $response['result'] = $result;
         }
-        
+
         return $response;
     }
     /**
@@ -77,8 +79,8 @@ abstract class ApiController
     {
         return $_POST;
     }
-    
-    
+
+
     /**
      *
      *
@@ -87,5 +89,5 @@ abstract class ApiController
     {
         return hash('sha512', Configuration::SECURITY_SALT . $string);
     }
-    
+
 }

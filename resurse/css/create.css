@@ -32,7 +32,11 @@
 
 .create-form button {
     margin-top: 1em;
-    line-height: 1.5em;
+    margin-right: 1em;
+    line-height: 1.7em;
+    width: 8em;
+    height: 2em;
+    font-size: 1em;
 }
 
 .create-form h1 {

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Registration</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <script type="text/javascript" src="{{resurse}}/js/jquery-2.0.0.min.js"></script>
         <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
@@ -10,7 +11,7 @@
         <script type="text/javascript">
         $(document).ready(function ($) {
             var errorMessage = new App.message.Error();
-            
+
             $('.js-button-click').click(function () {
                 var button = $(this).attr('disabled', 'disabled'),
                     name = $('.js-name').val(),
@@ -18,13 +19,13 @@
                     password = $('.js-password').val(),
                     confirmPassword = $('.js-confirm-password').val(),
                     hasError = false;
-                
+
                 errorMessage.hide();
                 if (name.length === 0) {
                     errorMessage.addMessage('Name must have at least 3 characters.');
-                    hasError = true;                    
+                    hasError = true;
                 }
-                
+
                 if (!App.validate.email(email)) {
                     errorMessage.addMessage('Invalid email address.');
                     hasError = true;
@@ -41,7 +42,7 @@
                     button.removeAttr('disabled');
                     return;
                 }
-                
+
                 $.ajax({
                     type: 'POST',
                     url: '{{api}}/register',
@@ -69,7 +70,7 @@
             });
         });
         </script>
-        
+
     </head>
     <body>
         <div id="content">

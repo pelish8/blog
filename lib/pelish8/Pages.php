@@ -4,19 +4,19 @@ namespace pelish8;
 
 abstract class Pages
 {
-    
+
     /**
      *
      *
      */
     protected $templateData = [];
-    
+
     /**
      *
      *
      */
     protected $page = null;
-    
+
     abstract public function template();
 
     /**
@@ -40,7 +40,7 @@ abstract class Pages
     {
         return $this->templateData;
     }
-    
+
     /**
      * set date
      *
@@ -49,7 +49,7 @@ abstract class Pages
     {
         $this->templateData[$name] = $value;
     }
-    
+
     /**
      * append array to template data
      *

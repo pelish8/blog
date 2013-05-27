@@ -6,22 +6,22 @@ class Db extends \PDO
 {
     const OK = '00000';
     const DUBLICATE = '23000';
-    
+
     protected static $instance = null;
-    
+
     public static function sharedDb()
     {
         if (static::$instance === null) {
 
             static::$instance = new static(Configuration::DB_TYPE . ':host=' . Configuration::DB_HOST . ';dbname=' . Configuration::DB_NAME,
-                                            Configuration::DB_USER_NAME, 
-                                            Configuration::DB_PASSWORD, 
+                                            Configuration::DB_USER_NAME,
+                                            Configuration::DB_PASSWORD,
                                             [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']);
         }
 
         return static::$instance;
     }
-    
+
     public function uniqId()
     {
         return uniqid();
@@ -49,9 +49,9 @@ class Db extends \PDO
         ];
         $query->execute($data);
         return $query->errorCode();
-        
+
     }
-    
+
     public function userLogIn($email, $password)
     {
         $query = $this->prepare('SELECT * FROM users WHERE email=:email AND password=:password');
@@ -59,7 +59,7 @@ class Db extends \PDO
             ':email' => $email,
             ':password' => $password
         ];
-        
+
         $query->execute($data);
         $result = $query->fetch(\PDO::FETCH_ASSOC);
         if ($result) {
@@ -67,7 +67,7 @@ class Db extends \PDO
         }
         return [];
     }
-    
+
     public function createArticle($title, $article, $tags)
     {
         try {
@@ -82,33 +82,33 @@ class Db extends \PDO
                 ':date' => gmdate('Y-m-d H:i:s')
             ];
             $query->execute($data);
-            
+
             $this->addTags($tags, $data[':id']);
-            
+
             $result = $query->errorCode();
-            
+
             $this->commit();
             return $result;
         } catch (\PDOException $e) {
             $db->rollBack();
             return $query->errorCode();
         }
-        
+
     }
-    
+
     protected function addTags($tags, $articleId)
-    {   
+    {
         // clean string
         $tags = preg_replace('/[^A-Za-z0-9\_\- ]/', '', $tags);
-        
+
         $query = $this->prepare('INSERT IGNORE INTO tags (id, tag) VALUES(:id, :tag)');
-        
+
         $queryRelationship = $this->prepare('INSERT IGNORE INTO article_tag (article_id, tag_id) VALUES(:article_id, :tag_id)');
         $queryRelationship->bindValue(':article_id', $articleId);
-        
+
         $tagArray = explode(' ', $tags);
         $count = count($tagArray);
-        
+
         if ($count > 0) {
             foreach ($tagArray as $tag) {
                 $id = $this->uniqId();
@@ -119,7 +119,5 @@ class Db extends \PDO
                 $queryRelationship->execute();
             }
          }
-
-        $this->saveArticleTagRelationship($tagArray, $articleId);
     }
 }

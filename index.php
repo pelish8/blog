@@ -67,7 +67,6 @@ $app->get('/api/:action', function ($action) use ($app) {
 });
 
 $app->post('/api/:action', function ($action) use ($app) {
-
     if (!$app->request()->isAjax()) {
         $app->notFound();
         return;

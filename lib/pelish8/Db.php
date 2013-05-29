@@ -102,64 +102,53 @@ class Db extends \PDO
     {
         // clean string
         $tags = trim($tags);
-        $tags = preg_replace('!\s+!', ' ', $input);
+        $tags = preg_replace('!\s+!', ' ', $tags);
         $tags = preg_replace('/[^A-Za-z0-9\_\- ]/', '', $tags);
 
-        $query = $this->prepare('INSERT IGNORE INTO tags (id, tag) VALUES(:id, :tag)');
-
-        $queryRelationship = $this->prepare('INSERT IGNORE INTO article_tag (article_id, tag_id) VALUES(:article_id, :tag_id)');
-        $queryRelationship->bindValue(':article_id', $articleId, \PDO::PARAM_INT);
-
-        $queryTag = $this->prepare('SELECT id FROM tags WHERE tag=:tag');
-/*
-SELECT id FROM tags WHERE tag IN (....)
-...
-$tagg = [tag => id];
-foreach ($tagArray as $tag) {
-    if (isset($tagg[$tag])) {
-        $id = $tagg[$tag];
-    } else {
-        $id = $this->uniqId();
-    }
-
-    $queryRelationship->bindValue(':tag_id', $id, \PDO::PARAM_STR);
-    $queryRelationship->execute();
-}
-
-*/
         $tagArray = explode(' ', $tags);
         $count = count($tagArray);
-
-        if ($count > 0) { // @TO_DO find better solution
-            foreach ($tagArray as $tag) {
-
-                $queryTag->bindValue(':tag', $tag);
-                $queryTag->execute();
-                $result = $queryTag->fetch(\PDO::FETCH_ASSOC);
-
-                if (!isset($result['id'])) {
-                    $id = $this->uniqId();
-                    $query->bindValue(':id', $id, \PDO::PARAM_INT);
-                    $query->bindValue(':tag', $tag, \PDO::PARAM_INT);
-                    $query->execute();
-                } else {
-                    $id =$result['id'];
-                }
-
-                $queryRelationship->bindValue(':tag_id', $id, \PDO::PARAM_STR);
-                $queryRelationship->execute();
-            }
+        
+        $insertPlaceHolder = implode(',', array_fill(0, $count, '(?,?)'));
+        
+        // inser new tags
+        $query = $this->prepare('INSERT IGNORE INTO tags (id, tag) VALUES' . $insertPlaceHolder);
+        
+        $i = 1;
+        foreach ($tagArray as $val) {
+            // $insert[] = ['id' => $this->uniqId(), 'tag' => $val];
+            $query->bindValue($i++, $this->uniqId(), \PDO::PARAM_INT);
+            $query->bindValue($i++, $val, \PDO::PARAM_STR);
         }
+        $query->execute();
+        
+        // find all tags id
+        $queryTag = $this->prepare('SELECT * FROM tags WHERE tag IN (' . implode(',', array_fill(0, $count, '?')) . ') GROUP BY id');
+        $i = 1;
+        foreach ($tagArray as $val) {
+            $queryTag->bindValue($i++, $val);
+        }
+        $queryTag->execute();
+        
+        // save relationship
+        $queryRelationship = $this->prepare('INSERT IGNORE INTO article_tag (article_id, tag_id) VALUES' . $insertPlaceHolder);
+        $i = 1;
+        while ($result = $queryTag->fetch(\PDO::FETCH_ASSOC)) {
+            $queryRelationship->bindValue($i++, $articleId);
+            $queryRelationship->bindValue($i++, $result['id']);
+        }
+        $queryRelationship->execute();
     }
-
+    
     public function articles($pageNumber, $pageSize)
     {
         $sql = 'SELECT articles.*, GROUP_CONCAT(tags.tag ORDER BY tags.tag) AS tags, users.name AS name
-                FROM articles
-                LEFT JOIN article_tag ON article_tag.article_id = articles.id
+                FROM articles 
+                LEFT JOIN article_tag ON article_tag.article_id = articles.id 
                 LEFT JOIN tags ON tags.id = article_tag.tag_id
                 LEFT JOIN users ON users.id = articles.user_id
-                GROUP BY articles.id LIMIT :start, :end';
+                GROUP BY articles.id 
+                ORDER BY articles.create_date DESC 
+                LIMIT :start, :end';
 
         $query = $this->prepare($sql);
         $pageNumber -= 1;
@@ -167,11 +156,16 @@ foreach ($tagArray as $tag) {
         $query->bindParam(':start', $d, \PDO::PARAM_INT);
         $query->bindParam(':end', $pageSize, \PDO::PARAM_INT);
         $query->execute();
+
         $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         if ($result) {
-            return $result;
+            $numrows = $this->query('SELECT FOUND_ROWS() AS totalRowCount')->fetchColumn();
+            if ($numrows === $pageSize) {
+                $numrows = $this->query('SELECT COUNT(*) AS totalRowCount FROM articles')->fetch(\PDO::FETCH_ASSOC);
+            }
+            return array_merge($result, $numrows);
         }
-
+        
         return [];
     }
 }

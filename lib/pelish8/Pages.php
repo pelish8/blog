@@ -42,7 +42,7 @@ abstract class Pages
     }
 
     /**
-     * set date
+     * set data
      *
      */
     public function setData($name, $value)

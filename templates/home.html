@@ -6,6 +6,7 @@
         <script type="text/javascript" src="{{resurse}}/js/jquery-2.0.0.min.js"></script>
         <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
         <link href="{{resurse}}/css/default.css" rel="stylesheet" type="text/css">
+        <link href="{{resurse}}/css/home.css" rel="stylesheet" type="text/css">
         <script type="text/javascript">
             $.ajax({
                 type: 'GET',
@@ -15,14 +16,18 @@
                     pageSize: 10
                 },
                 success: function (data, status, request) {
-                    // if (data.status === 'ok') {
-                    //     document.location = '/login';
-                    // } else if (data.reason === 'user-exists') {
-                    //     errorMessage.show('Sorry, email address ' + $('.js-email').val() + ' is already in use.');
-                    // } else {
-                    //     errorMessage.show('Error Sending Data.');
-                    // }
-                    // button.removeAttr('disabled');
+                    console.log(data);
+                    $(document).ready(function () {
+                        if (data.status === 'ok') {
+                            var target = $('.posts');
+                            $.each(data.result, function(key, value) {
+                                if (key === 'totalRowCount') {
+                                    return;
+                                }
+                                App.articles.ShortPost(value, target);
+                            });
+                        } 
+                    });
                 },
                 error: function () {
                     // button.removeAttr('disabled');
@@ -33,7 +38,8 @@
     </head>
     <body>
         <div id="content">
-
+            <div class="posts">
+            </div>
         </div>
     </body>
 </html>

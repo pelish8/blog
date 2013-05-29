@@ -2,6 +2,7 @@
     var app = {
         message: {},
         validate: {},
+        articles: {}
     };
     
     app.message.Error = function Error() {
@@ -44,5 +45,17 @@
         var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         return regex.test(email);
     }
+    
+    app.articles.ShortPost = function (post, target) {
+        var shorts = $('<div class="post"><div class="title">' +
+                        $('<div></div>').text(post.title).html() +
+                        '</div><pre class="content">' +
+                        $('<div></div>').text(post.content).html() + 
+                        '</pre><div class="tags">' +
+                        $('<div></div>').text(post.tags).html() +
+                        '</div></div>');
+        target.append(shorts);
+    }
+    
     global.App = app;
 }(this));

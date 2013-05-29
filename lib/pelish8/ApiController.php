@@ -28,12 +28,13 @@ abstract class ApiController
             }
 
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            echo $e->getMessage() . ' -- ' . $e->getFile() . ' -- ' . $e->getLine();
             $response = $this->errorResponse(self::NOT_FOUND);
         } catch (\PostException $e) { // @TO_DO implement
-            echo $e->getMessage();
+            echo $e->getMessage() . ' -- ' . $e->getFile() . ' -- ' . $e->getLine();
             $response = $this->errorResponse(self::INVALID_PARAMS);
         } catch (\GetException $e) { // @TO_DO implement
+            echo $e->getMessage() . ' -- ' . $e->getFile() . ' -- ' . $e->getLine();
             $response = $this->errorResponse(self::INVALID_PARAMS);
         }
 

@@ -1,0 +1,24 @@
+.posts {
+    width: 50em;
+    margin: 0 auto;
+}
+
+.posts .title {
+    font-size: 1.4em;
+}
+
+.posts .content {
+    font-size: 1em;
+    background-color: #fff;
+    border-top: solid 0.1em #d5d5d5;
+    border-bottom: solid 0.1em #d5d5d5;
+}
+
+.posts .tags {
+    font-size: 0.5em;
+}
+
+.posts .post {
+    border: solid 0.1em #d5d5d5;
+    margin-bottom: 0.5em;
+}

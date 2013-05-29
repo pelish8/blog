@@ -109,9 +109,24 @@ class Db extends \PDO
 
         $queryRelationship = $this->prepare('INSERT IGNORE INTO article_tag (article_id, tag_id) VALUES(:article_id, :tag_id)');
         $queryRelationship->bindValue(':article_id', $articleId, \PDO::PARAM_INT);
-        
-        $queryTag = $this->prepare('SELECT id FROM tags WHERE tag=:tag');
 
+        $queryTag = $this->prepare('SELECT id FROM tags WHERE tag=:tag');
+/*
+SELECT id FROM tags WHERE tag IN (....)
+...
+$tagg = [tag => id];
+foreach ($tagArray as $tag) {
+    if (isset($tagg[$tag])) {
+        $id = $tagg[$tag];
+    } else {
+        $id = $this->uniqId();
+    }
+
+    $queryRelationship->bindValue(':tag_id', $id, \PDO::PARAM_STR);
+    $queryRelationship->execute();
+}
+
+*/
         $tagArray = explode(' ', $tags);
         $count = count($tagArray);
 
@@ -130,18 +145,18 @@ class Db extends \PDO
                 } else {
                     $id =$result['id'];
                 }
-                
+
                 $queryRelationship->bindValue(':tag_id', $id, \PDO::PARAM_STR);
                 $queryRelationship->execute();
             }
         }
     }
-    
+
     public function articles($pageNumber, $pageSize)
     {
         $sql = 'SELECT articles.*, GROUP_CONCAT(tags.tag ORDER BY tags.tag) AS tags, users.name AS name
-                FROM articles 
-                LEFT JOIN article_tag ON article_tag.article_id = articles.id 
+                FROM articles
+                LEFT JOIN article_tag ON article_tag.article_id = articles.id
                 LEFT JOIN tags ON tags.id = article_tag.tag_id
                 LEFT JOIN users ON users.id = articles.user_id
                 GROUP BY articles.id LIMIT :start, :end';
@@ -156,7 +171,7 @@ class Db extends \PDO
         if ($result) {
             return $result;
         }
-        
+
         return [];
     }
 }

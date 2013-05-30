@@ -50,7 +50,7 @@
         var shorts = $('<div class="post"><div class="title">' +
                         $('<div></div>').text(post.title).html() +
                         '</div><pre class="content">' +
-                        $('<div></div>').text(post.content).html() + 
+                        $('<div></div>').text(post.content).html().substring(0, 140) + (post.content.length > 140 ? '...' : '') + 
                         '</pre><div class="tags">' +
                         $('<div></div>').text(post.tags).html() +
                         '</div></div>');

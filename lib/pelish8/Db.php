@@ -159,11 +159,12 @@ class Db extends \PDO
 
         $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         if ($result) {
-            $numrows = $this->query('SELECT FOUND_ROWS() AS totalRowCount')->fetchColumn();
-            if ($numrows === $pageSize) {
-                $numrows = $this->query('SELECT COUNT(*) AS totalRowCount FROM articles')->fetch(\PDO::FETCH_ASSOC);
+            $totalRowCount = $this->query('SELECT FOUND_ROWS()')->fetchColumn();
+            if ($totalRowCount === $pageSize) {
+                $totalRowCount = $this->query('SELECT COUNT(*) FROM articles')->fetchColumn();
             }
-            return array_merge($result, $numrows);
+            $result['totalRowCount'] = $totalRowCount;
+            return $result;
         }
         
         return [];

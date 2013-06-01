@@ -28,7 +28,9 @@ abstract class Pages
         $this->templateData = [
             'host' => $_SERVER['HTTP_HOST'],
             'resurse' => Configuration::PAGES_RESURSE_PATH,
-            'api' => Configuration::PAGES_API_URL
+            'api' => Configuration::PAGES_API_URL,
+            'blogTitle' => Configuration::BLOG_TITLE,
+            'isLogIn' => Session::sharedSession()->isLogIn()
         ];
     }
 

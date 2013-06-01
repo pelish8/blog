@@ -4,6 +4,8 @@ namespace pelish8;
 
 class Configuration
 {
+    const BLOG_TITLE = 'Title';
+    
     const DB_TYPE = 'mysql';
     const DB_HOST = 'localhost';
     const DB_NAME = 'blog';

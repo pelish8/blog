@@ -141,7 +141,7 @@ class Db extends \PDO
     
     public function articles($pageNumber, $pageSize)
     {
-        $sql = 'SELECT articles.*, GROUP_CONCAT(tags.tag ORDER BY tags.tag) AS tags, users.name AS name
+        $sql = 'SELECT articles.*, GROUP_CONCAT(tags.tag ORDER BY tags.tag) AS tags, users.name AS author
                 FROM articles 
                 LEFT JOIN article_tag ON article_tag.article_id = articles.id 
                 LEFT JOIN tags ON tags.id = article_tag.tag_id

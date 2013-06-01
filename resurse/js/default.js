@@ -47,13 +47,12 @@
     }
     
     app.articles.ShortPost = function (post, target) {
-        var shorts = $('<div class="post"><div class="title">' +
+        var shorts = $('<div class="post"><h3>' +
                         $('<div></div>').text(post.title).html() +
-                        '</div><pre class="content">' +
-                        $('<div></div>').text(post.content).html().substring(0, 140) + (post.content.length > 140 ? '...' : '') + 
-                        '</pre><div class="tags">' +
-                        $('<div></div>').text(post.tags).html() +
-                        '</div></div>');
+                        '</h3><div class="author">' + $('<div></div>').text(post.author).html() +
+                        '</div><p class="content">' +
+                        $('<div></div>').text(post.content).html().substring(0, 256) + (post.content.length > 256 ? '...' : '') + 
+                        '</p></div>');
         target.append(shorts);
     }
     

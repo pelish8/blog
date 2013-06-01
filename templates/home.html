@@ -37,8 +37,24 @@
         </script>
     </head>
     <body>
+        <header>
+            <div class="container">
+                <h1 id="logo">
+                    <a href="/">{{blogTitle}}</a>
+                </h1>
+                <nav>
+                    <a href="/" class="nav">home<a>
+                    <a href="/create">create<a>
+                        {%if isLogIn == true %}
+                            <a href="logout">log out</a>
+                        {% else %}
+                            <a href="/login">log in</a>
+                        {% endif %}
+                </nav>
+            </div>
+        </header>
         <div id="content">
-            <div class="posts">
+            <div class="container posts">
             </div>
         </div>
     </body>

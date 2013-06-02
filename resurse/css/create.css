@@ -1,42 +1,38 @@
-.create-form {
-    width: 50em;
-    margin: 0 auto;
-}
 
 .create-form input {
     display: block;
     width: inherit;
-    height: 2em;
-    border: solid 0.1em #d5d5d5;
+    height: 36px;
+    border: solid 1px #d5d5d5;
     outline: 1;
     outline-style: none;
     outline-width: 0;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    font-size: 1.2em;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 18px;
 }
 
 .create-form textarea {
     display: block;
     width: inherit;
-    height: 15em;
-    margin-top: 2em;
-    border: solid 0.1em #d5d5d5;
+    height: 300px;
+    margin-top: 15px;
+    border: solid 1px #d5d5d5;
     outline: 0;
     outline-style: none;
     outline-width: 0;
     resize: vertical;
-    padding: 0.5em;
-    font-size: 1.2em;
+    padding: 10px;
+    font-size: 16px;
 }
 
 .create-form button {
-    margin-top: 1em;
-    margin-right: 1em;
-    line-height: 1.7em;
-    width: 8em;
-    height: 2em;
-    font-size: 1em;
+    margin-top: 10px;
+    margin-right: 10px;
+/*    line-height: 1.7em;*/
+    width: 130px;
+/*    height: 2em;*/
+/*    font-size: 1em;*/
 }
 
 .create-form h1 {
@@ -44,7 +40,7 @@
 }
 
 .create-form div.info {
-    font-size: 0.7em;
-    margin-top: 1em;
-    margin-bottom: 0.2em;
+    font-size: 10px;
+    margin-top: 5px;
+    margin-bottom: 3px;
 }

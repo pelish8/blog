@@ -1,0 +1,19 @@
+<header>
+    <div class="container">
+        <div class="pure-menu pure-menu-open pure-menu-horizontal">
+            <h1><a href="/" class="pure-menu-heading">{{blogTitle}}</a></h1>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/create">Create</a></li>
+                {%if isLogIn == true %}
+                    <li>
+                        <a href="logout">Log out</a>
+                    </li>
+                {% else %}
+                    <li><a href="/register">Registration</a></li>
+                    <li><a href="/login">Log in</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</header>

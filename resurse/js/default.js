@@ -53,7 +53,35 @@
                         '</div><p class="content">' +
                         $('<div></div>').text(post.content).html().substring(0, 256) + (post.content.length > 256 ? '...' : '') + 
                         '</p></div>');
-        target.append(shorts);
+            return shorts;
+    }
+    
+    app.articles.Pagination = function (activePage, totalRowCount, pageSize, target) {
+        var pagesNumber = Math.ceil(totalRowCount / pageSize);
+        var html = '<ul class="pure-paginator js-pagination">';
+        html += '<li><a class="pure-button prev';
+        if (activePage == 1) {
+            html += ' pure-button-disabled';
+        }
+        html += '" href="#">&#171;</a></li>';
+
+        for (var i = 1; i <= pagesNumber; ++i) {
+            html += '<li><a class="pure-button';
+            if (i == activePage) {
+                html += ' pure-button-active';
+            }
+            html += '" href="#">' + i + '</a></li>';
+        }
+            
+        html += '<li><a class="pure-button next';
+
+        if (activePage == pagesNumber) {
+            html += ' pure-button-disabled';
+        }
+        html += '">&#187;</a></li>';
+        html += '</ul>';
+        $(target).empty();
+        $(target).html(html);
     }
     
     global.App = app;

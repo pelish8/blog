@@ -6,6 +6,10 @@
         <script type="text/javascript" src="{{resurse}}/js/jquery-2.0.0.min.js"></script>
         <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
         <script type="text/javascript" src="{{resurse}}/js/register.js"></script>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/base-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/buttons-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/forms-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/menus-min.css">
         <link href="{{resurse}}/css/default.css" rel="stylesheet" type="text/css">
         <link href="{{resurse}}/css/register.css" rel="stylesheet" type="text/css">
         <script type="text/javascript">
@@ -73,15 +77,18 @@
 
     </head>
     <body>
+        {% include 'header.html' %}
         <div id="content">
-            <div class="register-form">
-                <h1>Registration</h1>
-                <input type="text" name="name" placeholder="Name" class="first js-name">
-                <input type="email" placeholder="Email" class="js-email">
-                <input type="password" placeholder="Password" class="js-password">
-                <input type="password" placeholder="Confirm" class="last js-confirm-password">
-                <button class="js-button-click">Register and start blogging</button>
-                <a href="/login" class="login-link">Go To Log In Page</a>
+            <div class="container register-form">
+                <form class="pure-form pure-form-stacked login-form">
+                    <fieldset class="pure-group">
+                        <input type="text" name="name" placeholder="Name" class="first js-name">
+                        <input type="email" placeholder="Email" class="js-email">
+                        <input type="password" placeholder="Password" class="js-password">
+                        <input type="password" placeholder="Confirm" class="last js-confirm-password">
+                        <button class="pure-button pure-button-primary js-button-click">Register and start blogging</button>
+                    </fieldset>
+                </form>
             </div>
         </div>
     </body>

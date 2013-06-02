@@ -5,56 +5,84 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <script type="text/javascript" src="{{resurse}}/js/jquery-2.0.0.min.js"></script>
         <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/base-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/buttons-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/menus-min.css">
         <link href="{{resurse}}/css/default.css" rel="stylesheet" type="text/css">
         <link href="{{resurse}}/css/home.css" rel="stylesheet" type="text/css">
         <script type="text/javascript">
-            $.ajax({
-                type: 'GET',
-                url: '{{api}}/articles',
-                data: {
-                    pageNumber: 1,
-                    pageSize: 10
-                },
-                success: function (data, status, request) {
-                    console.log(data);
-                    $(document).ready(function () {
-                        if (data.status === 'ok') {
-                            var target = $('.posts');
-                            $.each(data.result, function(key, value) {
-                                if (key === 'totalRowCount') {
-                                    return;
+            var pageNumber = 1,
+                pageSize = 10,
+                pagination = false;
+                
+                function getArticles(pageNumber, pageSize) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{api}}/articles',
+                        data: {
+                            pageNumber: pageNumber,
+                            pageSize: pageSize
+                        },
+                        success: function (data, status, request) {
+                            console.log(data);
+                            $(document).ready(function () {
+                                if (data.status === 'ok') {
+                                    var target = $('.posts');
+                                    var articles = $('<div></div>');
+                                    $.each(data.result, function(key, value) {
+                                        if (key === 'totalRowCount') {
+                                            return;
+                                        }
+                                        articles.append(App.articles.ShortPost(value, target));
+                                    });
+                                    target.empty();
+                                    target.append(articles.html());
+                                    App.articles.Pagination(pageNumber, data.result.totalRowCount, pageSize, '.js-pagination-box');
                                 }
-                                App.articles.ShortPost(value, target);
                             });
-                        } 
+                        },
+                        error: function () {
+                            // button.removeAttr('disabled');
+                            // errorMessage.show('Error Sending Data.');
+                        }
                     });
-                },
-                error: function () {
-                    // button.removeAttr('disabled');
-                    // errorMessage.show('Error Sending Data.');
                 }
+                getArticles(pageNumber, pageSize);
+                
+            $(document).ready(function () {
+                $('.js-pagination-box').click(function (event) {
+                    var target = $(event.target),
+                        targetHtml = target.html();
+                    console.log(target.html());
+                    // pageNumber = parseInt(pageNumber, 10);
+                    if (target.hasClass('pure-button-disabled') || target.hasClass('pure-button-active')) {
+                        return;
+                    }
+                
+                    if (pageNumber > 1) {
+                        var f = $('.js-pagination-box prev');
+                        if (f.hasClass('pure-button-disabled')) 
+                            f.removClass('pure-button-disabled');
+                    } 
+                    
+                    if (targetHtml == '«') {
+                        pageNumber--;
+                    } else if (targetHtml == '»') {
+                        pageNumber++;
+                    } else {
+                        pageNumber = targetHtml;
+                    }
+                    getArticles(pageNumber, pageSize);
+                });
             });
         </script>
     </head>
     <body>
-        <header>
-            <div class="container">
-                <h1 id="logo">
-                    <a href="/">{{blogTitle}}</a>
-                </h1>
-                <nav>
-                    <a href="/" class="nav">home<a>
-                    <a href="/create">create<a>
-                        {%if isLogIn == true %}
-                            <a href="logout">log out</a>
-                        {% else %}
-                            <a href="/login">log in</a>
-                        {% endif %}
-                </nav>
-            </div>
-        </header>
+        {% include 'header.html' %}
         <div id="content">
             <div class="container posts">
+            </div>
+            <div class="container pagination js-pagination-box">
             </div>
         </div>
     </body>

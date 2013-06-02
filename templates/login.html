@@ -5,6 +5,10 @@
         <script type="text/javascript" src="{{resurse}}/js/jquery-2.0.0.min.js"></script>
         <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
         <script type="text/javascript" src="{{resurse}}/js/login.js"></script>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/base-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/buttons-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/forms-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/menus-min.css">
         <link href="{{resurse}}/css/default.css" rel="stylesheet" type="text/css">
         <link href="{{resurse}}/css/login.css" rel="stylesheet" type="text/css">
         <script type="text/javascript">
@@ -56,13 +60,16 @@
         </script>
     </head>
     <body>
+        {% include 'header.html' %}
         <div id="content">
-            <div class="login-form">
-                <h1>Log In</h1>
-                <input type="text" placeholder="Email" class="first js-email" value="pelish8@gmail.com">
-                <input type="password" placeholder="Password" class="last js-password" value="srce1244">
-                <button class="js-log-in-button">Log In</button>
-                <a href="/register" class="login-link">Go To Registration Page</a>
+            <div class="container">
+                <form class="pure-form pure-form-stacked login-form">
+                    <fieldset class="pure-group">
+                        <input type="email" placeholder="Email" class="first js-email" value="pelish8@gmail.com">
+                        <input type="password" placeholder="Password" class="last js-password" value="srce1244">
+                        <button class="pure-button pure-button-primary js-log-in-button">Log In</button>
+                    </fieldset>
+                </form>
             </div>
         </div>
     </body>

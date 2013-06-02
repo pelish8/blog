@@ -1,68 +1,10 @@
-.register-form {
-    width: 20em;
+.register-form fieldset {
     margin: 0 auto;
-    position: relative;
-    top: 20%;
-    text-align: center;
+    width: 295px;
+    margin-top: 10%;
 }
-
-.register-form h1 {
-    text-align: center;
-}
-
-.register-form input {
-    display: block;
-    width: inherit;
-    margin: auto;
-    line-height: 1.5em;
-    border-top: none;
-    border-bottom: solid 0.1em #d5d5d5;
-    border-left: solid 0.1em #d5d5d5;
-    border-right: solid 0.1em #d5d5d5;
-    
-    outline: 0;
-    outline-style: none;
-    outline-width: 0;
-    
-    font-size: 1em;
-    font-weight: bold;
-    padding: 0.4em;
-    box-shadow: 0em 0.2em 0.8em #aaa;
-}
-
+.register-form input,
 .register-form button {
-    display: block;
-    width: 20.7em;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 1em;
-    line-height: 2em;
-    font-size: 1em;
-    font-weight: bold;
-}
-
-.register-form input.first {
-    border-top: solid 0.1em #d5d5d5;
-    -webkit-border-top-left-radius: 0.3em;
-    -webkit-border-top-right-radius: 0.3em;
-    -moz-border-radius-topleft: 0.3em;
-    -moz-border-radius-topright: 0.3em;
-    border-top-left-radius: 0.3em;
-    border-top-right-radius: 0.3em;
-}
-
-.register-form input.last {
-    border-bottom: solid 0.1em #d5d5d5;
-    -webkit-border-bottom-left-radius: 0.3em;
-    -webkit-border-bottom-right-radius: 0.3em;
-    -moz-border-radius-bottomleft: 0.3em;
-    -moz-border-radius-bottomright: 0.3em;
-    border-bottom-left-radius: 0.3em;
-    border-bottom-right-radius: 0.3em;
-}
-
-.register-form a {
-    padding-top: 0.4em;
-    font-size: 0.8em;
-    display: block;
+    font-size: 120%;
+    width: 300px;
 }

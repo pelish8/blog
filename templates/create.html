@@ -5,6 +5,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <script type="text/javascript" src="{{resurse}}/js/jquery-2.0.0.min.js"></script>
         <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/base-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/buttons-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/menus-min.css">
         <link href="{{resurse}}/css/default.css" rel="stylesheet" type="text/css">
         <link href="{{resurse}}/css/create.css" rel="stylesheet" type="text/css">
         <script type="text/javascript">
@@ -60,15 +63,15 @@
         </script>
     </head>
     <body>
+        {% include 'header.html' %}
         <div id="content">
-            <div class="create-form">
-                <h1>Create</h1>
+            <div class="container create-form">
                 <input type="text" class="article-title js-title" placeholder="Title...">
                 <textarea class="article-body js-article"></textarea>
                 <div class="info">Separate tags with space.</div>
                 <input type="text" class="article-tags js-tags" placeholder="Tags...">
-                <button class="js-save-button-click">Save</button>
-                <button class="js-cancel-button-click">Cancel</button>
+                <button class="pure-button pure-button-primary js-save-button-click">Save</button>
+                <button class="pure-button pure-button-primary js-cancel-button-click">Cancel</button>
             </div>
         </div>
     </body>

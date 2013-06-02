@@ -159,10 +159,8 @@ class Db extends \PDO
 
         $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         if ($result) {
-            $totalRowCount = $this->query('SELECT FOUND_ROWS()')->fetchColumn();
-            if ($totalRowCount === $pageSize) {
-                $totalRowCount = $this->query('SELECT COUNT(*) FROM articles')->fetchColumn();
-            }
+            // $totalRowCount = $this->query('SELECT FOUND_ROWS()')->fetchColumn();
+            $totalRowCount = $this->query('SELECT COUNT(*) FROM articles')->fetchColumn(); // workaround mysql bug
             $result['totalRowCount'] = $totalRowCount;
             return $result;
         }

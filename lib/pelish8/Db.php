@@ -74,13 +74,15 @@ class Db extends \PDO
     {
         try {
             $this->beginTransaction();
-            $query = $this->prepare('INSERT INTO articles (id, title, content, user_id, create_date) VALUES(:id, :title, :content, :user_id, :date)');
+            $query = $this->prepare('INSERT INTO articles (id, title, content, user_id, url_path, create_date) VALUES(:id, :title, :content, :user_id, :url_path, :date)');
             $userInfo = Session::sharedSession()->userInfo();
+            $urlPath = str_replace(' ', '-', strtolower($title));
             $data = [
                 ':id' => $this->uniqId(),
                 ':title' => $title,
                 ':content' => $article,
                 ':user_id' => $userInfo[0],
+                ':url_path' => $urlPath,
                 ':date' => gmdate('Y-m-d H:i:s')
             ];
             $query->execute($data);
@@ -107,12 +109,12 @@ class Db extends \PDO
 
         $tagArray = explode(' ', $tags);
         $count = count($tagArray);
-        
+
         $insertPlaceHolder = implode(',', array_fill(0, $count, '(?,?)'));
-        
+
         // inser new tags
         $query = $this->prepare('INSERT IGNORE INTO tags (id, tag) VALUES' . $insertPlaceHolder);
-        
+
         $i = 1;
         foreach ($tagArray as $val) {
             // $insert[] = ['id' => $this->uniqId(), 'tag' => $val];
@@ -120,15 +122,15 @@ class Db extends \PDO
             $query->bindValue($i++, $val, \PDO::PARAM_STR);
         }
         $query->execute();
-        
+
         // find all tags id
-        $queryTag = $this->prepare('SELECT * FROM tags WHERE tag IN (' . implode(',', array_fill(0, $count, '?')) . ') GROUP BY id');
+        $queryTag = $this->prepare('SELECT id FROM tags WHERE tag IN (' . implode(',', array_fill(0, $count, '?')) . ') GROUP BY id');
         $i = 1;
         foreach ($tagArray as $val) {
             $queryTag->bindValue($i++, $val);
         }
         $queryTag->execute();
-        
+
         // save relationship
         $queryRelationship = $this->prepare('INSERT IGNORE INTO article_tag (article_id, tag_id) VALUES' . $insertPlaceHolder);
         $i = 1;
@@ -138,16 +140,16 @@ class Db extends \PDO
         }
         $queryRelationship->execute();
     }
-    
+
     public function articles($pageNumber, $pageSize)
     {
         $sql = 'SELECT articles.*, GROUP_CONCAT(tags.tag ORDER BY tags.tag) AS tags, users.name AS author
-                FROM articles 
-                LEFT JOIN article_tag ON article_tag.article_id = articles.id 
+                FROM articles
+                LEFT JOIN article_tag ON article_tag.article_id = articles.id
                 LEFT JOIN tags ON tags.id = article_tag.tag_id
                 LEFT JOIN users ON users.id = articles.user_id
-                GROUP BY articles.id 
-                ORDER BY articles.create_date DESC 
+                GROUP BY articles.id
+                ORDER BY articles.create_date DESC
                 LIMIT :start, :end';
 
         $query = $this->prepare($sql);
@@ -164,7 +166,24 @@ class Db extends \PDO
             $result['totalRowCount'] = $totalRowCount;
             return $result;
         }
-        
+
         return [];
+    }
+
+    public function article($date, $urlPath)
+    {
+        $sql = 'SELECT articles.*, GROUP_CONCAT(tags.tag ORDER BY tags.tag) AS tags, users.name AS author
+                FROM articles
+                LEFT JOIN article_tag ON article_tag.article_id = articles.id
+                LEFT JOIN tags ON tags.id = article_tag.tag_id
+                LEFT JOIN users ON users.id = articles.user_id
+                WHERE articles.create_date = :date AND articles.url_path = :url_path';
+
+        $query = $this->prepare($sql);
+
+        $query->bindParam(':date', $date);
+        $query->bindParam(':url_path', $urlPath);
+        $query->execute();
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

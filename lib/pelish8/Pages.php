@@ -30,7 +30,10 @@ abstract class Pages
             'resurse' => Configuration::PAGES_RESURSE_PATH,
             'api' => Configuration::PAGES_API_URL,
             'blogTitle' => Configuration::BLOG_TITLE,
-            'isLogIn' => Session::sharedSession()->isLogIn()
+            'isLogIn' => Session::sharedSession()->isLogIn(),
+            'config' => [
+                'dateFormat' => Configuration::dateFormat
+            ]
         ];
     }
 

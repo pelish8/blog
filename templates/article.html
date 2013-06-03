@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script type="text/javascript" src="{{resurse}}/js/jquery-2.0.0.min.js"></script>
+        <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/base-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/buttons-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/menus-min.css">
+        <link href="{{resurse}}/css/default.css" rel="stylesheet" type="text/css">
+        <link href="{{resurse}}/css/article.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript">
+
+        </script>
+    </head>
+    <body>
+        {% include 'header.html' %}
+        <div id="content">
+            <div class="container article">
+                <h2>{{article.title}}</h2>
+                <div>Author: {{article.author}}</div>
+                <div>Date: {{article.create_date|date(config.dateFormat)}}</div>
+                <p>{{article.content}}</p>
+                <div>Tags: {{article.tags}}</div>
+            </div>
+            <div class="container comment">
+                <h3>Comment</h3>
+                <form class="pure-form pure-form-stacked login-form">
+                    <textarea class="js-comment"></textarea>
+                    <button class="pure-button pure-button-primary js-add-button-click">Add</button>
+                </from>
+            </div>
+        </div>
+    </body>
+</html>

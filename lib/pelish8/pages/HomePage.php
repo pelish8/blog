@@ -1,5 +1,5 @@
 <?php
-    
+
 namespace pelish8\pages;
 
 class HomePage extends \pelish8\Pages
@@ -8,7 +8,7 @@ class HomePage extends \pelish8\Pages
     {
         return 'home.html';
     }
-    
+
     public function __construct()
     {
         parent::__construct();

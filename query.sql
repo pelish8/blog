@@ -16,8 +16,10 @@ CREATE TABLE articles (
     title VARCHAR(255) NOT NULL,
     content TEXT NOT NULL,
     user_id VARCHAR(16),
+    url_path VARCHAR(255) NOT NULL,
     create_date DATETIME NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    INDEX (id, url_path, create_date)
 );
 
 CREATE TABLE tags (

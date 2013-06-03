@@ -21,7 +21,7 @@ $app->get('/login', function () use ($app) {
         $app->redirect('/');
         return;
     }
-    
+
     $page = new \pelish8\pages\LoginPage();
     $app->render($page->template(), $page->userData());
 });
@@ -32,7 +32,7 @@ $app->get('/logout', function () use ($app) {
 });
 
 $app->get('/register', function () use ($app) {
-    
+
     $page = new pages\RegisterPage();
     $app->render($page->template(), $page->userData()); //, $page->responseStatus);
 });
@@ -42,7 +42,7 @@ $app->get('/create', function () use ($app) {
         $app->redirect('/login');
         return;
     }
-    
+
     $page = new pages\CreatePage();
     $app->render($page->template(), $page->userData());
 });
@@ -50,6 +50,12 @@ $app->get('/create', function () use ($app) {
 $app->get('/install', function () {
     echo 'install';
 });
+
+$app->get('/:date/:time/:title', function ($date, $time, $title) use ($app) {
+    $page = new pages\ArticlePage($date, $time, $title);
+    $app->render($page->template(), $page->userData());
+});
+
 
 // api calls
 $app->get('/api/:action', function ($action) use ($app) {

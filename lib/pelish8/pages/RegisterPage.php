@@ -1,5 +1,5 @@
 <?php
-    
+
 namespace pelish8\pages;
 
 class RegisterPage extends \pelish8\Pages
@@ -8,10 +8,9 @@ class RegisterPage extends \pelish8\Pages
     {
         return 'register.html';
     }
-    
+
     public function __construct()
     {
         parent::__construct();
-        $this->setData('nickName', 'Sale');
     }
 }

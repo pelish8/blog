@@ -6,9 +6,16 @@ class Db extends \PDO
 {
     const OK = '00000';
     const DUBLICATE = '23000';
+    const TRANSACTION_ERROR = '-1';
 
     protected static $instance = null;
-
+    
+    /**
+     * Instance of \pelish8\Db
+     *
+     * @access public
+     * @return \pelish8\Db
+     */
     public static function sharedDb()
     {
         if (static::$instance === null) {
@@ -23,7 +30,13 @@ class Db extends \PDO
 
         return static::$instance;
     }
-
+    
+    /**
+     * Uniq ID
+     *
+     * @access public
+     * @return string
+     */
     public function uniqId()
     {
         return uniqid();
@@ -32,9 +45,9 @@ class Db extends \PDO
     /**
      * Register new user
      *
-     * @param string user Full name
-     * @param string user email
-     * @param password hash user password
+     * @param string $name user name
+     * @param string $email user email
+     * @param string $password hash user password
      * @access public
      * @return mySql status code, '00000' = 'ok'
      */
@@ -54,6 +67,14 @@ class Db extends \PDO
 
     }
 
+    /**
+     * Log in user
+     *
+     * @param string $email user imail
+     * @param string $password user password
+     * @access public
+     * @return array
+     */
     public function userLogIn($email, $password)
     {
         $query = $this->prepare('SELECT * FROM users WHERE email=:email AND password=:password');
@@ -70,6 +91,15 @@ class Db extends \PDO
         return [];
     }
 
+    /**
+     * Create new article
+     *
+     * @param string $title article title
+     * @param string $article article content
+     * @param string $tags article tags
+     * @access public
+     * @return mySql status code
+     */
     public function createArticle($title, $article, $tags)
     {
         try {
@@ -81,7 +111,7 @@ class Db extends \PDO
                 ':id' => $this->uniqId(),
                 ':title' => $title,
                 ':content' => $article,
-                ':user_id' => $userInfo[0],
+                ':user_id' => $userInfo['id'],
                 ':url_path' => $urlPath,
                 ':date' => gmdate('Y-m-d H:i:s')
             ];
@@ -95,19 +125,27 @@ class Db extends \PDO
             return $result;
         } catch (\PDOException $e) {
             $db->rollBack();
-            return $query->errorCode();
+            return self::TRANSACTION_ERROR;
         }
 
     }
 
+    /**
+     * Register new user
+     *
+     * @param string $tags tags to sava
+     * @param string $articleId id of article related with tags
+     * @access protected
+     * @return void
+     */
     protected function addTags($tags, $articleId)
     {
         // clean string
-        $tags = trim($tags);
+        $tags = strtolower(trim($tags));
         $tags = preg_replace('!\s+!', ' ', $tags);
         $tags = preg_replace('/[^A-Za-z0-9\_\- ]/', '', $tags);
 
-        $tagArray = explode(' ', $tags);
+        $tagArray = array_unique(explode(' ', $tags));
         $count = count($tagArray);
 
         $insertPlaceHolder = implode(',', array_fill(0, $count, '(?,?)'));
@@ -124,23 +162,33 @@ class Db extends \PDO
         $query->execute();
 
         // find all tags id
-        $queryTag = $this->prepare('SELECT id FROM tags WHERE tag IN (' . implode(',', array_fill(0, $count, '?')) . ') GROUP BY id');
+        $queryTag = $this->prepare('SELECT * FROM tags WHERE tag IN (' . implode(',', array_fill(0, $count, '?')) . ') GROUP BY id');
         $i = 1;
         foreach ($tagArray as $val) {
             $queryTag->bindValue($i++, $val);
         }
         $queryTag->execute();
-
         // save relationship
         $queryRelationship = $this->prepare('INSERT IGNORE INTO article_tag (article_id, tag_id) VALUES' . $insertPlaceHolder);
         $i = 1;
         while ($result = $queryTag->fetch(\PDO::FETCH_ASSOC)) {
-            $queryRelationship->bindValue($i++, $articleId);
-            $queryRelationship->bindValue($i++, $result['id']);
+            $queryRelationship->bindParam($i, $articleId);
+            $i++;
+            $queryRelationship->bindParam($i, $result['id']);
+            $i++;
         }
         $queryRelationship->execute();
+        $queryRelationship->errorCode();
     }
 
+    /**
+     * List of articles
+     *
+     * @param int $pageNumber number of current page
+     * @param int $pageSize size of page
+     * @access public
+     * @return  ARRAY
+     */
     public function articles($pageNumber, $pageSize)
     {
         $sql = 'SELECT articles.*, GROUP_CONCAT(tags.tag ORDER BY tags.tag) AS tags, users.name AS author
@@ -169,10 +217,18 @@ class Db extends \PDO
 
         return [];
     }
-
+    
+    /**
+     * Single article
+     *
+     * @param string $date date when article was created
+     * @param string $urlPath url path
+     * @access public
+     * @return array
+     */
     public function article($date, $urlPath)
     {
-        $sql = 'SELECT articles.*, GROUP_CONCAT(tags.tag ORDER BY tags.tag) AS tags, users.name AS author
+        $sql = 'SELECT articles.*, GROUP_CONCAT(tags.tag ORDER BY tags.tag SEPARATOR \' \') AS tags, users.name AS author
                 FROM articles
                 LEFT JOIN article_tag ON article_tag.article_id = articles.id
                 LEFT JOIN tags ON tags.id = article_tag.tag_id
@@ -185,5 +241,67 @@ class Db extends \PDO
         $query->bindParam(':url_path', $urlPath);
         $query->execute();
         return $query->fetch(\PDO::FETCH_ASSOC);
+    }
+    
+    /**
+     * Create comment
+     *
+     * @param string $articleId
+     * @param string $comment
+     * @param string $name name of user that created article
+     * @access public
+     * @return mySql status code
+     */
+    public function createComment($articleId, $comment, $name)
+    {
+            $session = Session::sharedSession();
+            if ($session->isLogIn()) {
+                $userInfo = $session->userInfo();
+                $userId = $userInfo['id'];
+            } else {
+                $userId = null;
+            }
+            
+            $query = $this->prepare('INSERT INTO comments (id, comment, article_id, user_id, user_name, create_date)
+                                    VALUES (:id, :comment, :article_id, :user_id, :user_name, :create_date)');
+            $data = [
+                ':id' => $this->uniqId(),
+                ':comment' => $comment,
+                ':article_id' => $articleId,
+                ':user_id' => $userId,
+                ':user_name' => $name,
+                ':create_date' => gmdate('Y-m-d H:i:s')
+            ];
+            
+            $query->execute($data);
+            return $query->errorCode();
+    }
+    
+    /**
+     * List of all comments associated with article
+     *
+     * @param string $articleId
+     * @access public
+     * @return array
+     */
+    public function comments($articleId)
+    {   
+        $sql = 'SELECT comments.comment AS comment, COALESCE(users.name, comments.user_name) AS author, comments.create_date AS createDate 
+                FROM comments
+                LEFT JOIN users ON users.id = comments.user_id
+                WHERE comments.article_id = :article_id
+                ORDER BY comments.create_date DESC';
+
+        $query = $this->prepare($sql);
+        
+        $query->bindParam(':article_id', $articleId);
+        $query->execute();
+        
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+        if ($result) {
+            return $result;
+        }
+        
+        return [];
     }
 }

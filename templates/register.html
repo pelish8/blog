@@ -23,7 +23,7 @@
                     password = $('.js-password').val(),
                     confirmPassword = $('.js-confirm-password').val(),
                     hasError = false;
-
+                    console.log(1);
                 errorMessage.hide();
                 if (name.length === 0) {
                     errorMessage.addMessage('Name must have at least 3 characters.');
@@ -44,7 +44,7 @@
                 if (hasError) {
                     errorMessage.show();
                     button.removeAttr('disabled');
-                    return;
+                    return false;
                 }
 
                 $.ajax({

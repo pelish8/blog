@@ -19,6 +19,7 @@
                     $.ajax({
                         type: 'GET',
                         url: '{{api}}/articles',
+                        cache: false,
                         data: {
                             pageNumber: pageNumber,
                             pageSize: pageSize
@@ -33,7 +34,7 @@
                                         if (key === 'totalRowCount') {
                                             return;
                                         }
-                                        articles.append(App.articles.ShortPost(value, target));
+                                        articles.append(App.articles.ShortPost(value));
                                     });
                                     target.empty();
                                     target.append(articles.html());

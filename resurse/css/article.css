@@ -1,16 +1,15 @@
 .article,
-.comment {
+.comment-form {
     background-color: #fff;
     box-shadow: 0px 3px 8px #aaa;
     padding: 10px;
 }
 
-.comment textarea {
+.comment-form textarea {
     display: block;
     width: inherit;
     min-height: 70px;
     width: 920px;
-    margin-top: 15px;
     border: solid 1px #d5d5d5;
     outline: 0;
     outline-style: none;
@@ -20,11 +19,22 @@
     font-size: 16px;
 }
 
-.comment button {
+.article pre,
+.comments .comment pre {
+    font-family: "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
+    color: #484848;
+}
+
+.comment-form button {
     margin-top: 10px;
 }
 
-.article pre {
-    font-family: "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
-    color: #484848;
+.comment-form .pure-form input {
+    font-size: 100%;
+}
+.comments .comment {
+    background-color: #fff;
+    box-shadow: 0px 3px 8px #aaa;
+    padding: 10px;
+    margin-top: 10px;
 }

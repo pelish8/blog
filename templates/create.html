@@ -7,6 +7,7 @@
         <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
         <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/base-min.css">
         <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/buttons-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/forms-min.css">
         <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/menus-min.css">
         <link href="{{resurse}}/css/default.css" rel="stylesheet" type="text/css">
         <link href="{{resurse}}/css/create.css" rel="stylesheet" type="text/css">
@@ -20,15 +21,15 @@
                         tags = $('.js-tags').val(),
                         hasError = false;
                     errorMessage.hide();
-                    if (title.length === 0) {
-                        errorMessage.addMessage('Title must have at least 1 characters.');
+                    if (title.length === 0 && title !== ' ') {
+                        errorMessage.addMessage('Title field cannot be empty or space filled.');
                         hasError = true;
                     }
 
                     if (hasError) {
                         errorMessage.show();
                         button.removeAttr('disabled');
-                        return;
+                        return false;
                     }
 
                     $.ajax({

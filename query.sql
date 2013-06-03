@@ -9,7 +9,7 @@ CREATE TABLE users (
     PRIMARY KEY (id),
     UNIQUE (email),
     INDEX (id, email, password)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE articles (
     id CHAR(36) NOT NULL,
@@ -20,17 +20,34 @@ CREATE TABLE articles (
     create_date DATETIME NOT NULL,
     PRIMARY KEY (id),
     INDEX (id, url_path, create_date)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE tags (
     id CHAR(36) NOT NULL,
     tag VARCHAR(60) NOT NULL,
     PRIMARY KEY (id),
     UNIQUE (tag)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE article_tag (
     article_id CHAR(36) NOT NULL,
     tag_id CHAR(36) NOT NULL,
     PRIMARY KEY (article_id, tag_id)
-);
+) ENGINE=InnoDB;
+
+CREATE TABLE comments (
+    id CHAR(36) NOT NULL,
+    comment TEXT NOT NULL,
+    article_id CHAR(36) NOT NULL,
+    user_id CHAR(36) NULL,
+    user_name CHAR(255) NULL,
+    create_date DATETIME NOT NULL,
+    PRIMARY KEY (id),
+INDEX (article_id)
+) ENGINE=InnoDB;
+
+-- CREATE TABLE article_comment (
+--     article_id CHAR(36) NOT NULL,
+--     comment_id CHAR(36) NOT NULL,
+--     PRIMARY KEY (article_id, comment_id)
+-- ) ENGINE=InnoDB;

@@ -8,7 +8,7 @@ abstract class ApiController
     const NOT_FOUND = 'not-found';
     const PASSWORD_DO_NOT_MATCH = 'password-do-hot-match';
     const USER_EXISTS = 'user-exists';
-    const ERROR_SENDIND_DATA = 'error-sending-data';
+    const ERROR_SENDING_DATA = 'error-sending-data';
     const INVALID_PARAMS = 'invalid-params';
     const INVALID_CREDENTIALS = 'invalid-credentials';
 

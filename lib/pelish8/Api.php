@@ -25,7 +25,7 @@ class Api extends \pelish8\ApiController
             return $this->errorResponse(self::USER_EXISTS);
         }
 
-        return $this->errorResponse(self::ERROR_SENDIND_DATA);
+        return $this->errorResponse(self::ERROR_SENDING_DATA);
     }
 
     /**
@@ -66,7 +66,7 @@ class Api extends \pelish8\ApiController
             return $this->succesResponse();
         }
         
-        return $this->errorResponse(self::ERROR_SENDIND_DATA);
+        return $this->errorResponse(self::ERROR_SENDING_DATA);
     }
     
     /**
@@ -78,10 +78,37 @@ class Api extends \pelish8\ApiController
         $get = $this->getGet('pageSize', 'pageNumber');
         $result = Db::sharedDb()->articles($get['pageNumber'], $get['pageSize']);
         
-        if (count($result) > 0) {        
-            return $this->succesResponse($result);
+        return $this->succesResponse($result);
+    }
+    
+    /**
+     *
+     *
+     */
+    public function createComment()
+    {
+        $post = $this->getPost('name', 'comment', 'articleId');
+        
+        $status = Db::sharedDb()->createComment($post['articleId'], $post['comment'], $post['name']);
+        
+        if ($status === DB::OK) {
+            return $this->succesResponse();
         }
         
-        return $this->errorResponse(self::INVALID_CREDENTIALS);
+        return $this->errorResponse(self::ERROR_SENDING_DATA);
+        
+    }
+    
+    /**
+     *
+     *
+     */
+    public function comments()
+    {
+        $get = $this->getGet('articleId');
+        $result = Db::sharedDb()->comments($get['articleId']);
+        
+        return $this->succesResponse($result);
+        
     }
 }

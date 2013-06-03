@@ -112,7 +112,7 @@ class Session
     public function setLogInSession($id, $name)
     {
         $this->set(Configuration::SESSIN_USER_LOG_IN_ID, $id);
-        $this->set('userName', $name);
+        $this->set(Configuration::SESSIN_USER_NAME, $name);
     }
     
     /**
@@ -135,8 +135,8 @@ class Session
     public function userInfo()
     {
         return [
-            $this->get(Configuration::SESSIN_USER_LOG_IN_ID),
-            $this->get(Configuration::SESSIN_USER_NAME)
+            'id' => $this->get(Configuration::SESSIN_USER_LOG_IN_ID),
+            'name' => $this->get(Configuration::SESSIN_USER_NAME)
         ];
     }
 }

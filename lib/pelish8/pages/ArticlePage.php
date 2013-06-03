@@ -23,10 +23,10 @@ class ArticlePage extends \pelish8\Pages
 
         $article = \pelish8\Db::sharedDb()->article($fullDate, $title);
 
-        if (!$article) {
+        if (empty($article['id'])) {
             $this->pageNotFound = true;
             return;
         }
-        $this->setData('article', $article[0]);
+        $this->setData('article', $article);
     }
 }

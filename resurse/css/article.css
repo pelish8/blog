@@ -23,3 +23,8 @@
 .comment button {
     margin-top: 10px;
 }
+
+.article pre {
+    font-family: "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
+    color: #484848;
+}

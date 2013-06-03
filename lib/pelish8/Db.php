@@ -184,6 +184,6 @@ class Db extends \PDO
         $query->bindParam(':date', $date);
         $query->bindParam(':url_path', $urlPath);
         $query->execute();
-        return $query->fetchAll(\PDO::FETCH_ASSOC);
+        return $query->fetch(\PDO::FETCH_ASSOC);
     }
 }

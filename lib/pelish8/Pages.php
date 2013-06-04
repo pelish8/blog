@@ -6,8 +6,8 @@ abstract class Pages
 {
 
     /**
-     *
-     *
+     * Data that will be use in tempalte.
+     * @access protected
      */
     protected $templateData = [];
 
@@ -15,13 +15,11 @@ abstract class Pages
      *
      *
      */
-    protected $page = null;
-
     abstract public function template();
 
     /**
-     *
-     *
+     * Prepare default date for template
+     * @access public
      */
     public function __construct()
     {
@@ -38,8 +36,9 @@ abstract class Pages
     }
 
     /**
-     * return data that will be used in template
-     *
+     * Return data that will be used in template
+     * @access public
+     * @return array
      */
     public function userData()
     {
@@ -47,8 +46,8 @@ abstract class Pages
     }
 
     /**
-     * set data
-     *
+     * Set data that will be use in tempate
+     * @access public
      */
     public function setData($name, $value)
     {
@@ -56,8 +55,8 @@ abstract class Pages
     }
 
     /**
-     * append array to template data
-     *
+     * Append array to template data
+     * @access public
      */
     public function appendData(array $data)
     {

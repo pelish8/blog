@@ -26,11 +26,11 @@
                             if (data.status === 'ok') {
                                 var target = $('.js-comments'),
                                     comments = $('<div></div>');
-                            
+
                                 $.each(data.result, function(key, value) {
                                     comments.append(App.articles.Comment(value));
                                 });
-                            
+
                                 target.empty();
                                 target.append(comments.html());
                             } else {
@@ -48,13 +48,13 @@
                         name = $('.js-name').val(),
                         comment = $('.js-comment').val(),
                         hasError = false;
-                        
+
                     errorMessage.hide();
                     if (name.length === 0 && name !== ' ') {
                         errorMessage.addMessage('Name field cannot be empty or space filled.');
                         hasError = true;
                     }
-                    
+
                     if (comment.length === 0 && comment !== ' ') {
                         errorMessage.addMessage('Comment field cannot be empty or space filled.');
                         hasError = true;
@@ -67,7 +67,7 @@
                     }
                     $.ajax({
                         type: 'POST',
-                        url: '{{api}}/createComment',
+                        url: '{{api}}/create-comment',
                         data: {
                             name: name,
                             comment: comment,
@@ -86,7 +86,7 @@
                             errorMessage.show('Error Sending Data.');
                         }
                     });
-                
+
                     return false;
                 });
             });

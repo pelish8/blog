@@ -7,18 +7,18 @@ class Session
     /**
      *
      * @var /pelish8/Session
-     * @access protected 
+     * @access protected
      */
     protected static $instance = null;
-    
+
     protected function __construct()
     {
         session_cache_limiter(false);
         session_start();
-        
+
         // set timeout session
     }
-    
+
     /**
      * return instance of /pelish8/Session
      *
@@ -30,7 +30,7 @@ class Session
         if (static::$instance === null) {
             static::$instance = new static();
         }
-        
+
         return static::$instance;
     }
 
@@ -45,11 +45,11 @@ class Session
     {
         $_SESSION[$name] = $value;
     }
-    
+
     /**
      * get session value
      *
-     * @param string $name name of session 
+     * @param string $name name of session
      * @access public
      * @return session value or null
      */
@@ -58,10 +58,10 @@ class Session
         if (isset($_SESSION[$name])) {
             return $_SESSION[$name];
         }
-        
+
         return null;
     }
-    
+
     /**
      * check if session exist
      *
@@ -73,10 +73,10 @@ class Session
         if (isset($_SESSION[$name])) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * destroy session
      *
@@ -89,7 +89,7 @@ class Session
             unset($_SESSION[$name]);
         }
     }
-    
+
     /**
      *
      * @access public
@@ -100,10 +100,10 @@ class Session
         if ($this->exist(Configuration::SESSIN_USER_LOG_IN_ID)) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      *
      * @access public
@@ -114,7 +114,7 @@ class Session
         $this->set(Configuration::SESSIN_USER_LOG_IN_ID, $id);
         $this->set(Configuration::SESSIN_USER_NAME, $name);
     }
-    
+
     /**
      *
      * @access public
@@ -125,7 +125,7 @@ class Session
         $this->destroy(Configuration::SESSIN_USER_LOG_IN_ID);
         $this->destroy(Configuration::SESSIN_USER_NAME);
     }
-    
+
     /**
      * return user data saved in session
      *

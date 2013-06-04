@@ -65,7 +65,7 @@
     };
 
     app.articles.Pagination = function (activePage, totalRowCount, pageSize, target) {
-        var pagesNumber = Math.ceil(totalRowCount / pageSize);
+        var PagesNumber = Math.ceil(totalRowCount / pageSize);
         var html = '<ul class="pure-paginator js-pagination">';
         html += '<li><a class="pure-button prev';
         if (activePage == 1) {
@@ -73,7 +73,7 @@
         }
         html += '" href="#">&#171;</a></li>';
 
-        for (var i = 1; i <= pagesNumber; ++i) {
+        for (var i = 1; i <= PagesNumber; ++i) {
             html += '<li><a class="pure-button';
             if (i == activePage) {
                 html += ' pure-button-active';
@@ -83,7 +83,7 @@
 
         html += '<li><a class="pure-button next';
 
-        if (activePage == pagesNumber) {
+        if (activePage == PagesNumber) {
             html += ' pure-button-disabled';
         }
         html += '">&#187;</a></li>';

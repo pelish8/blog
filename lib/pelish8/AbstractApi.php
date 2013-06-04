@@ -2,20 +2,67 @@
 
 namespace pelish8;
 
-abstract class ApiAbstract
+/**
+ * @package prelovac
+ * @author  Aleksandar Stevic
+ */
+abstract class AbstractApi
 {
-    const ACCESS_DENIED = 'access-denied';
-    const NOT_FOUND = 'not-found';
-    const PASSWORD_DO_NOT_MATCH = 'password-do-hot-match';
-    const USER_EXISTS = 'user-exists';
-    const ERROR_SENDING_DATA = 'error-sending-data';
-    const INVALID_PARAMS = 'invalid-params';
-    const INVALID_CREDENTIALS = 'invalid-credentials';
-
-    protected $apiMap = [];
     /**
      *
+     * @const string [ACCESS_DENIED]
+     */
+    const ACCESS_DENIED = 'access-denied';
+    
+    /**
      *
+     * @const string [NOT_FOUND]
+     */
+    const NOT_FOUND = 'not-found';
+    
+    /**
+     *
+     * @const string [PASSWORD_DO_NOT_MATCH]
+     */
+    const PASSWORD_DO_NOT_MATCH = 'password-do-hot-match';
+    
+    /**
+     *
+     * @const string [USER_EXISTS]
+     */
+    const USER_EXISTS = 'user-exists';
+    
+    /**
+     *
+     * @const string [ERROR_SENDING_DATA]
+     */
+    const ERROR_SENDING_DATA = 'error-sending-data';
+    
+    /**
+     *
+     * @const string [INVALID_PARAMS]
+     */
+    const INVALID_PARAMS = 'invalid-params';
+    
+    /**
+     *
+     * @const string [INVALID_CREDENTIALS]
+     */
+    const INVALID_CREDENTIALS = 'invalid-credentials';
+
+    /**
+     * Map http request action API mthod
+     *
+     * @var array
+     * @access protected
+     */
+    protected $apiMap = [];
+    
+    /**
+     * __construct function
+     *
+     * @param string [$action]
+     * @return void
      */
     public function __construct($action)
     {
@@ -29,7 +76,7 @@ abstract class ApiAbstract
                 $response = $this->errorResponse(self::NOT_FOUND);
             }
 
-        } catch (Exception\InvalidParamException $e) { // @TO_DO implement
+        } catch (Exception\InvalidParam $e) { // @TO_DO implement
             $response = $this->errorResponse(self::INVALID_PARAMS);
         } catch (\Exception $e) {
             // echo $e->getMessage() . ' -- ' . $e->getFile() . ' -- ' . $e->getLine();
@@ -40,19 +87,23 @@ abstract class ApiAbstract
     }
 
     /**
+     * Map request action to api method
      *
-     *
-     *
+     * @param string [$action] request action
+     * @param string  [$method]
+     * @access public
+     * @return void
      */
-    public function map($path, $method)
+    public function map($action, $method)
     {
-        $this->apiMap[$path] = $method;
+        $this->apiMap[$action] = $method;
     }
 
     /**
-    *
-    *
-    *
+    * Append array of request action to api methods
+    * @param array [$mapArray]
+    * @access public
+    * @return void
     */
     public function mapAppend(array $mapArray)
     {
@@ -61,7 +112,10 @@ abstract class ApiAbstract
 
     /**
      * Prepare success response
+     *
+     * @param mixed [$result]
      * @access public
+     * @return array
      */
     public function successResponse($result = null)
     {
@@ -75,7 +129,10 @@ abstract class ApiAbstract
     }
     /**
      * Prepare error response
+     *
+     * @param string [$reason]
      * @access public
+     * @return array
      */
     public function errorResponse($reason)
     {
@@ -87,16 +144,21 @@ abstract class ApiAbstract
 
     /**
      * Convert php array to JSON
+     *
+     * @param array [$response]
      * @access public
+     * @return void
      */
-    public function processResponse($response)
+    public function processResponse(array $response)
     {
         echo json_encode($response);
     }
 
     /**
      * Process POST request data
+     *
      * @access protected
+     * @return array
      */
     protected function getPost()
     {
@@ -104,18 +166,19 @@ abstract class ApiAbstract
         $post = [];
         foreach ($arguments as $name) {
             if (!isset($_POST[$name])) {
-                throw new \pelish8\Exception\InvalidParamException("Error Processing POST Request, some params are missing.", 1);
-
+                throw new Exception\InvalidParam("Error Processing POST Request, some params are missing.", 1);
                 return;
             }
-            $get[$name] = $_POST[$name];
+            $post[$name] = $_POST[$name];
         }
-        return $post; // @TO_DO implement
+        return $post;
     }
 
     /**
      * Process GET request data
+     *
      * @access protected
+     * @return array
      */
     protected function getGet()
     {
@@ -123,21 +186,23 @@ abstract class ApiAbstract
         $get = [];
         foreach ($arguments as $name) {
             if (!isset($_GET[$name])) {
-                throw new \pelish8\Exception\InvalidParamException("Error Processing GET Request, some params are missing.", 1);
+                throw new Exception\InvalidParam("Error Processing GET Request, some params are missing.", 1);
                 return;
             }
             $get[$name] = $_GET[$name];
         }
-        return $get; // @TO_DO implement
+        return $get;
     }
 
     /**
-     * Hash strnig with sha512 adn salt from configuration
-     *
+     * Hash string with sha512 and salt from configuration
+     * @param mixed [$mixed]
+     * @access protected
+     * @return array
      */
-    protected function hash($string)
+    protected function hash($mixed)
     {
-        return hash('sha512', Configuration::SECURITY_SALT . $string);
+        return hash('sha512', Configuration::SECURITY_SALT . $mixed);
     }
 
 }

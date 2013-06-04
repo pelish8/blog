@@ -4,60 +4,75 @@ namespace pelish8;
 
 require 'vendor/autoload.php';
 
+$view = Configuration::SLIM_VIEW;
+$debug = Configuration::SLIM_DEBUG;
+if (!$debug) {
+    // Twig: added cache path
+    $view::$twigOptions = [
+        'cache' => Configuration::SLIN_CACHE
+    ];
+}
 
 $app = new \Slim\Slim([
-    'debug' => Configuration::SLIM_DEBUG,
+    'debug' => $debug,
     'templates.path' => Configuration::SLIM_TEMPLATE_PATH,
-    'view' => Configuration::SLIM_VIEW
+    'view' => $view
 ]);
 
+// home page
 $app->get('/', function () use ($app) {
-    $page = new pages\HomePage();
+    $page = new Page\Home();
     $app->render($page->template(), $page->userData());
 });
 
+// log in page
 $app->get('/login', function () use ($app) {
     if (Session::sharedSession()->isLogIn()) {
         $app->redirect('/');
         return;
     }
 
-    $page = new \pelish8\pages\LoginPage();
+    $page = new Page\Login();
     $app->render($page->template(), $page->userData());
 });
 
+// log out page
 $app->get('/logout', function () use ($app) {
     Session::sharedSession()->userLogOut();
     $app->redirect('/');
 });
 
+// register new user
 $app->get('/register', function () use ($app) {
 
-    $page = new pages\RegisterPage();
+    $page = new Page\Register();
     $app->render($page->template(), $page->userData()); //, $page->responseStatus);
 });
 
+// create new article
 $app->get('/create', function () use ($app) {
     if (!Session::sharedSession()->isLogIn()) {
         $app->redirect('/login');
         return;
     }
 
-    $page = new pages\CreatePage();
+    $page = new Page\Create();
     $app->render($page->template(), $page->userData());
 });
 
+// install aplication
 $app->get('/install', function () {
-    echo 'install';
+    // @todo implement
 });
 
+// article details
 $app->get('/:date/:time/:title', function ($date, $time, $title) use ($app) {
-    $page = new pages\ArticlePage($date, $time, $title);
+    $page = new Page\Article($date, $time, $title);
     $app->render($page->template(), $page->userData());
 });
 
 
-// api calls
+// get api calls
 $app->get('/api/:action', function ($action) use ($app) {
 
     if (!$app->request()->isAjax()) {
@@ -72,6 +87,7 @@ $app->get('/api/:action', function ($action) use ($app) {
     new Api($action);
 });
 
+// post api calls
 $app->post('/api/:action', function ($action) use ($app) {
     if (!$app->request()->isAjax()) {
         $app->notFound();
@@ -85,10 +101,12 @@ $app->post('/api/:action', function ($action) use ($app) {
     new Api($action);
 });
 
+// error page
 $app->error(function (\Exception $e) use ($app) {
     $app->render('error.html');
 });
 
+// page not found
 $app->notFound(function () use ($app) {
     $app->render('404.html');
 });

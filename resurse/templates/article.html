@@ -76,6 +76,7 @@
                         success: function (data, status, request) {
                             if (data.status === 'ok') {
                                addComments();
+                               $('.js-comment').val('');
                             } else {
                                 errorMessage.show('Error Sending Data.');
                             }

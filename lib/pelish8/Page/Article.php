@@ -1,8 +1,12 @@
 <?php
 
-namespace pelish8\pages;
+namespace pelish8\Page;
 
-class ArticlePage extends \pelish8\Pages
+/**
+ * @package prelovac
+ * @author  Aleksandar Stevic
+ */
+class Article extends \pelish8\AbstractPage
 {
     private $pageNotFound = false;
     public function template()

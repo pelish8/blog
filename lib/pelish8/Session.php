@@ -2,6 +2,11 @@
 
 namespace pelish8;
 
+
+/**
+ * @package prelovac
+ * @author  Aleksandar Stevic
+ */
 class Session
 {
     /**
@@ -10,7 +15,13 @@ class Session
      * @access protected
      */
     protected static $instance = null;
-
+    
+    /**
+     * __construct function
+     *
+     * @access protected
+     * @return void
+     */
     protected function __construct()
     {
         session_cache_limiter(false);
@@ -37,9 +48,10 @@ class Session
     /**
      * set session
      *
-     * @param string $name name of session variable
-     * @param string $value session value
+     * @param string [$name] name of session variable
+     * @param string [$value] session value
      * @access public
+     * @return void
      */
     public function set($name, $value)
     {
@@ -49,9 +61,9 @@ class Session
     /**
      * get session value
      *
-     * @param string $name name of session
+     * @param string [$name] name of session
      * @access public
-     * @return session value or null
+     * @return mixed
      */
     public function get($name)
     {
@@ -65,6 +77,7 @@ class Session
     /**
      * check if session exist
      *
+     * @param string [$name] session name
      * @access public
      * @return boolean
      */
@@ -80,8 +93,9 @@ class Session
     /**
      * destroy session
      *
-     * @param string $name name of session that should be destroyed
+     * @param string [$name] name of session that should be destroyed
      * @access public
+     * @return void
      */
     public function destroy($name)
     {
@@ -91,6 +105,7 @@ class Session
     }
 
     /**
+     * Check if user is log in.
      *
      * @access public
      * @return boolean
@@ -105,7 +120,10 @@ class Session
     }
 
     /**
+     * setLogInSession function
      *
+     * @param string [$id] user id
+     * @param striong [$name] user name
      * @access public
      * @return void
      */
@@ -116,6 +134,7 @@ class Session
     }
 
     /**
+     * userLogOut function
      *
      * @access public
      * @return void

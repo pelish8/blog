@@ -45,9 +45,3 @@ CREATE TABLE comments (
     PRIMARY KEY (id),
 INDEX (article_id)
 ) ENGINE=InnoDB;
-
--- CREATE TABLE article_comment (
---     article_id CHAR(36) NOT NULL,
---     comment_id CHAR(36) NOT NULL,
---     PRIMARY KEY (article_id, comment_id)
--- ) ENGINE=InnoDB;

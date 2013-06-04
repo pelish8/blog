@@ -2,23 +2,31 @@
 
 namespace pelish8;
 
-abstract class Pages
+/**
+ * @package prelovac
+ * @author  Aleksandar Stevic
+ */
+abstract class AbstractPage
 {
 
     /**
      * Data that will be use in tempalte.
+     * @var array
      * @access protected
      */
     protected $templateData = [];
 
     /**
+     * template name
      *
-     *
+     * @abstract
+     * @access public
      */
     abstract public function template();
 
     /**
-     * Prepare default date for template
+     * __construct function
+     *
      * @access public
      */
     public function __construct()
@@ -30,13 +38,14 @@ abstract class Pages
             'blogTitle' => Configuration::BLOG_TITLE,
             'isLogIn' => Session::sharedSession()->isLogIn(),
             'config' => [
-                'dateFormat' => Configuration::dateFormat
+                'dateFormat' => Configuration::DATE_FORMAT
             ]
         ];
     }
 
     /**
      * Return data that will be used in template
+     *
      * @access public
      * @return array
      */
@@ -47,7 +56,9 @@ abstract class Pages
 
     /**
      * Set data that will be use in tempate
+     *
      * @access public
+     * @return void
      */
     public function setData($name, $value)
     {
@@ -57,6 +68,7 @@ abstract class Pages
     /**
      * Append array to template data
      * @access public
+     * @return void
      */
     public function appendData(array $data)
     {

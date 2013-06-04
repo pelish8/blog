@@ -2,17 +2,42 @@
 
 namespace pelish8;
 
+/**
+ * @package prelovac
+ * @author  Aleksandar Stevic
+ */
 class Db extends \PDO
 {
+    /**
+     *
+     * @const string [OK] status ok
+     */
     const OK = '00000';
-    const DUBLICATE = '23000';
+    
+    /**
+     *
+     * @const string [DUPLICATE] status duplicate
+     */
+    const DUPLICATE = '23000';
+    
+    /**
+     *
+     * @const string [TRANSACTION_ERROR] status transaction error
+     */
     const TRANSACTION_ERROR = '-1';
 
+    /**
+     *
+     * @var $instance
+     * @static
+     * @access protected
+     */
     protected static $instance = null;
     
     /**
-     * Instance of \pelish8\Db
+     * sharedDb function
      *
+     * @static
      * @access public
      * @return \pelish8\Db
      */
@@ -45,11 +70,11 @@ class Db extends \PDO
     /**
      * Register new user
      *
-     * @param string $name user name
-     * @param string $email user email
-     * @param string $password hash user password
+     * @param string [$name] user name
+     * @param string [$email] user email
+     * @param string [$password] hash user password
      * @access public
-     * @return mySql status code, '00000' = 'ok'
+     * @return string
      */
     public function createUser($name, $email, $password)
     {
@@ -70,8 +95,8 @@ class Db extends \PDO
     /**
      * Log in user
      *
-     * @param string $email user imail
-     * @param string $password user password
+     * @param string [$email] user imail
+     * @param string [$password] user password
      * @access public
      * @return array
      */
@@ -94,11 +119,11 @@ class Db extends \PDO
     /**
      * Create new article
      *
-     * @param string $title article title
-     * @param string $article article content
-     * @param string $tags article tags
+     * @param string [$title] article title
+     * @param string [$article] article content
+     * @param string [$tags] article tags
      * @access public
-     * @return mySql status code
+     * @return string
      */
     public function createArticle($title, $article, $tags)
     {
@@ -133,8 +158,8 @@ class Db extends \PDO
     /**
      * Register new user
      *
-     * @param string $tags tags to sava
-     * @param string $articleId id of article related with tags
+     * @param string [$tags] tags to sava
+     * @param string [$articleId] id of article related with tags
      * @access protected
      * @return void
      */
@@ -184,10 +209,10 @@ class Db extends \PDO
     /**
      * List of articles
      *
-     * @param int $pageNumber number of current page
-     * @param int $pageSize size of page
+     * @param int [$pageNumber] number of current page
+     * @param int [$pageSize] size of page
      * @access public
-     * @return  ARRAY
+     * @return  array
      */
     public function articles($pageNumber, $pageSize)
     {
@@ -221,8 +246,8 @@ class Db extends \PDO
     /**
      * Single article
      *
-     * @param string $date date when article was created
-     * @param string $urlPath url path
+     * @param string [$date] date when article was created
+     * @param string [$urlPath] url path
      * @access public
      * @return array
      */
@@ -246,11 +271,11 @@ class Db extends \PDO
     /**
      * Create comment
      *
-     * @param string $articleId
-     * @param string $comment
+     * @param string [$articleId]
+     * @param string [$comment]
      * @param string $name name of user that created article
      * @access public
-     * @return mySql status code
+     * @return string
      */
     public function createComment($articleId, $comment, $name)
     {
@@ -280,7 +305,7 @@ class Db extends \PDO
     /**
      * List of all comments associated with article
      *
-     * @param string $articleId
+     * @param string [$articleId]
      * @access public
      * @return array
      */
@@ -290,7 +315,7 @@ class Db extends \PDO
                 FROM comments
                 LEFT JOIN users ON users.id = comments.user_id
                 WHERE comments.article_id = :article_id
-                ORDER BY comments.create_date DESC';
+                ORDER BY comments.create_date ASC';
 
         $query = $this->prepare($sql);
         

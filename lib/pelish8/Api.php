@@ -2,8 +2,18 @@
 
 namespace pelish8;
 
-class Api extends ApiAbstract
+/**
+ * @package prelovac
+ * @author  Aleksandar Stevic
+ */
+class Api extends AbstractApi
 {
+    /**
+     * __construct function 
+     * 
+     * @param string [$action]
+     * @return void
+     */
     public function __construct($action)
     {
         $this->mapAppend([
@@ -19,7 +29,9 @@ class Api extends ApiAbstract
     }
     /**
      * Register new user
+     *
      * @access public
+     * @return void
      */
     public function register()
     {
@@ -34,7 +46,7 @@ class Api extends ApiAbstract
 
         if ($status === DB::OK) {
             return $this->successResponse();
-        } else if ($status === DB::DUBLICATE) {
+        } else if ($status === DB::DUPLICATE) {
             return $this->errorResponse(self::USER_EXISTS);
         }
 
@@ -43,7 +55,9 @@ class Api extends ApiAbstract
 
     /**
      * Log in user
+     *
      * @access public
+     * @return void
      */
     public function login()
     {
@@ -65,7 +79,9 @@ class Api extends ApiAbstract
 
     /**
      * Create new article
+     *
      * @access public
+     * @return void
      */
     public function createArticle()
     {
@@ -84,7 +100,9 @@ class Api extends ApiAbstract
 
     /**
      * Return list of articles
+     *
      * @access public
+     * @return void
      */
     public function articles()
     {
@@ -96,12 +114,13 @@ class Api extends ApiAbstract
 
     /**
      * Create new comment
+     *
      * @access public
+     * @return void
      */
     public function createComment()
     {
         $post = $this->getPost('name', 'comment', 'articleId');
-
         $status = Db::sharedDb()->createComment($post['articleId'], $post['comment'], $post['name']);
 
         if ($status === DB::OK) {
@@ -114,7 +133,9 @@ class Api extends ApiAbstract
 
     /**
      * Return list of comment for the article
+     *
      * @access public
+     * @return void
      */
     public function comments()
     {

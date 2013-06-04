@@ -38,3 +38,11 @@
     padding: 10px;
     margin-top: 10px;
 }
+.comments .author {
+    font-weight: bold;
+}
+
+.comments .create-date {
+    border-bottom: dotted 1px #d5d5d5;
+    font-size: 90%;
+}

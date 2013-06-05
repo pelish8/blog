@@ -15,7 +15,7 @@ class Session
      * @access protected
      */
     protected static $instance = null;
-    
+
     /**
      * __construct function
      *
@@ -24,7 +24,7 @@ class Session
      */
     protected function __construct()
     {
-        session_cache_limiter(false);
+        session_cache_limiter('nocache');
         session_start();
 
         // set timeout session

@@ -46,7 +46,7 @@ $app->get('/logout', function () use ($app) {
 $app->get('/register', function () use ($app) {
 
     $page = new Page\Register();
-    $app->render($page->template(), $page->userData()); //, $page->responseStatus);
+    $app->render($page->template(), $page->userData());
 });
 
 // create new article

@@ -10,10 +10,10 @@
 
         this.element = $('<ul class="error-bar"></ul>');
         this.element.hide();
-        
+
         $('#content').prepend(this.element);
-        
-        $(document).on('click', '.error-bar .cancel', $.proxy(function() { 
+
+        $(document).on('click', '.error-bar .cancel', $.proxy(function() {
             this.hide();
         }, this));
 
@@ -91,17 +91,17 @@
         $(target).empty();
         $(target).html(html);
     };
-    
+
     app.articles.Comment = function (comment) {
-        var comment = $('<div class="comment" ><div class="author">' + 
-                        $('<div></div>').text(comment.author).html() + 
-                        '</div><div class="create-date">' + 
-                        $('<div></div>').text(comment.createDate).html() + 
-                        '</div>' +
-                        '<pre>' + 
-                        $('<div></div>').text(comment.comment).html() + 
-                        '</pre></div>');
-        
+        var comment = $('<div class="comment" ><div class="author">' +
+            $('<div></div>').text(comment.author).html() +
+            '</div><div class="create-date">' +
+            $('<div></div>').text(comment.createDate).html() +
+            '</div>' +
+            '<pre>' +
+            $('<div></div>').text(comment.comment).html() +
+            '</pre></div>');
+
         return comment;
     };
 

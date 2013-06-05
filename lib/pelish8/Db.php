@@ -13,13 +13,13 @@ class Db extends \PDO
      * @const string [OK] status ok
      */
     const OK = '00000';
-    
+
     /**
      *
      * @const string [DUPLICATE] status duplicate
      */
     const DUPLICATE = '23000';
-    
+
     /**
      *
      * @const string [TRANSACTION_ERROR] status transaction error
@@ -33,7 +33,7 @@ class Db extends \PDO
      * @access protected
      */
     protected static $instance = null;
-    
+
     /**
      * sharedDb function
      *
@@ -55,7 +55,7 @@ class Db extends \PDO
 
         return static::$instance;
     }
-    
+
     /**
      * Uniq ID
      *
@@ -242,7 +242,7 @@ class Db extends \PDO
 
         return [];
     }
-    
+
     /**
      * Single article
      *
@@ -267,7 +267,7 @@ class Db extends \PDO
         $query->execute();
         return $query->fetch(\PDO::FETCH_ASSOC);
     }
-    
+
     /**
      * Create comment
      *
@@ -286,7 +286,7 @@ class Db extends \PDO
             } else {
                 $userId = null;
             }
-            
+
             $query = $this->prepare('INSERT INTO comments (id, comment, article_id, user_id, user_name, create_date)
                                     VALUES (:id, :comment, :article_id, :user_id, :user_name, :create_date)');
             $data = [
@@ -297,11 +297,11 @@ class Db extends \PDO
                 ':user_name' => $name,
                 ':create_date' => gmdate('Y-m-d H:i:s')
             ];
-            
+
             $query->execute($data);
             return $query->errorCode();
     }
-    
+
     /**
      * List of all comments associated with article
      *
@@ -310,23 +310,23 @@ class Db extends \PDO
      * @return array
      */
     public function comments($articleId)
-    {   
-        $sql = 'SELECT comments.comment AS comment, COALESCE(users.name, comments.user_name) AS author, comments.create_date AS createDate 
+    {
+        $sql = 'SELECT comments.comment AS comment, COALESCE(users.name, comments.user_name) AS author, comments.create_date AS createDate
                 FROM comments
                 LEFT JOIN users ON users.id = comments.user_id
                 WHERE comments.article_id = :article_id
                 ORDER BY comments.create_date ASC';
 
         $query = $this->prepare($sql);
-        
+
         $query->bindParam(':article_id', $articleId);
         $query->execute();
-        
+
         $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         if ($result) {
             return $result;
         }
-        
+
         return [];
     }
 }

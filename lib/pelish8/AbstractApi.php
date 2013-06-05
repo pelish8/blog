@@ -13,42 +13,48 @@ abstract class AbstractApi
      * @const string [ACCESS_DENIED]
      */
     const ACCESS_DENIED = 'access-denied';
-    
+
     /**
      *
      * @const string [NOT_FOUND]
      */
     const NOT_FOUND = 'not-found';
-    
+
     /**
      *
      * @const string [PASSWORD_DO_NOT_MATCH]
      */
     const PASSWORD_DO_NOT_MATCH = 'password-do-hot-match';
-    
+
     /**
      *
      * @const string [USER_EXISTS]
      */
     const USER_EXISTS = 'user-exists';
-    
+
     /**
      *
      * @const string [ERROR_SENDING_DATA]
      */
     const ERROR_SENDING_DATA = 'error-sending-data';
-    
+
     /**
      *
      * @const string [INVALID_PARAMS]
      */
     const INVALID_PARAMS = 'invalid-params';
-    
+
     /**
      *
      * @const string [INVALID_CREDENTIALS]
      */
     const INVALID_CREDENTIALS = 'invalid-credentials';
+
+    /**
+     *
+     * @const string [DATABASE_ERROR]
+     */
+    const DATABASE_ERROR = 'database-error';
 
     /**
      * Map http request action API mthod
@@ -57,7 +63,7 @@ abstract class AbstractApi
      * @access protected
      */
     protected $apiMap = [];
-    
+
     /**
      * __construct function
      *
@@ -78,8 +84,11 @@ abstract class AbstractApi
 
         } catch (Exception\InvalidParam $e) { // @TO_DO implement
             $response = $this->errorResponse(self::INVALID_PARAMS);
+        } catch (\PDOException $e) {
+            // log  'message: ' .$e->getMessage() . ' code: ' . $e->getCode() . ' file: ' . $e->getFile() . ' line: ' . $e->getLine();
+            $response = $this->errorResponse(self::DATABASE_ERROR);
         } catch (\Exception $e) {
-            // echo $e->getMessage() . ' -- ' . $e->getFile() . ' -- ' . $e->getLine();
+            // log 'message: ' . $e->getMessage() . ' file: ' . $e->getFile() . ' line: ' . $e->getLine();
             $response = $this->errorResponse(self::ERROR_SENDING_DATA);
         }
 
@@ -101,6 +110,7 @@ abstract class AbstractApi
 
     /**
     * Append array of request action to api methods
+    *
     * @param array [$mapArray]
     * @access public
     * @return void
@@ -119,7 +129,9 @@ abstract class AbstractApi
      */
     public function successResponse($result = null)
     {
-        $response = ['status' => 'ok'];
+        $response = [
+            'status' => 'ok'
+        ];
 
         if ($result !== null) {
             $response['result'] = $result;
@@ -196,6 +208,7 @@ abstract class AbstractApi
 
     /**
      * Hash string with sha512 and salt from configuration
+     *
      * @param mixed [$mixed]
      * @access protected
      * @return array

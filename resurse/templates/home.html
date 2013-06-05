@@ -14,7 +14,7 @@
             var pageNumber = 1,
                 pageSize = 10,
                 pagination = false;
-                
+
                 function getArticles(pageNumber, pageSize) {
                     $.ajax({
                         type: 'GET',
@@ -49,7 +49,7 @@
                     });
                 }
                 getArticles(pageNumber, pageSize);
-                
+
             $(document).ready(function () {
                 $('.js-pagination-box').click(function (event) {
                     var target = $(event.target),
@@ -59,13 +59,13 @@
                     if (target.hasClass('pure-button-disabled') || target.hasClass('pure-button-active')) {
                         return;
                     }
-                
+
                     if (pageNumber > 1) {
                         var f = $('.js-pagination-box prev');
-                        if (f.hasClass('pure-button-disabled')) 
+                        if (f.hasClass('pure-button-disabled'))
                             f.removClass('pure-button-disabled');
-                    } 
-                    
+                    }
+
                     if (targetHtml == '«') {
                         pageNumber--;
                     } else if (targetHtml == '»') {
@@ -86,5 +86,6 @@
             <div class="container pagination js-pagination-box">
             </div>
         </div>
+        {% include 'footer.html' %}
     </body>
 </html>

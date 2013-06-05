@@ -89,3 +89,8 @@ header .pure-menu ul {
     float: right;
     margin-top: 20px;
 }
+
+footer.container {
+    text-align: center;
+    margin-top: 20px;
+}

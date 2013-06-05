@@ -9,8 +9,8 @@ namespace pelish8;
 class Api extends AbstractApi
 {
     /**
-     * __construct function 
-     * 
+     * __construct function
+     *
      * @param string [$action]
      * @return void
      */
@@ -120,8 +120,8 @@ class Api extends AbstractApi
      */
     public function createComment()
     {
-        $post = $this->getPost('name', 'comment', 'articleId');
-        $status = Db::sharedDb()->createComment($post['articleId'], $post['comment'], $post['name']);
+        $post = $this->getPost('name', 'comment', 'articleId', 'parentId');
+        $status = Db::sharedDb()->createComment($post['articleId'], $post['comment'], $post['name'], $post['parentId']);
 
         if ($status === DB::OK) {
             return $this->successResponse();

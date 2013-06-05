@@ -85,10 +85,10 @@ abstract class AbstractApi
         } catch (Exception\InvalidParam $e) { // @TO_DO implement
             $response = $this->errorResponse(self::INVALID_PARAMS);
         } catch (\PDOException $e) {
-            // log  'message: ' .$e->getMessage() . ' code: ' . $e->getCode() . ' file: ' . $e->getFile() . ' line: ' . $e->getLine();
+            echo  'message: ' .$e->getMessage() . ' code: ' . $e->getCode() . ' file: ' . $e->getFile() . ' line: ' . $e->getLine();
             $response = $this->errorResponse(self::DATABASE_ERROR);
         } catch (\Exception $e) {
-            // log 'message: ' . $e->getMessage() . ' file: ' . $e->getFile() . ' line: ' . $e->getLine();
+            echo 'message: ' . $e->getMessage() . ' file: ' . $e->getFile() . ' line: ' . $e->getLine();
             $response = $this->errorResponse(self::ERROR_SENDING_DATA);
         }
 

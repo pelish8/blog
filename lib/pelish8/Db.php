@@ -180,7 +180,6 @@ class Db extends \PDO
 
         $i = 1;
         foreach ($tagArray as $val) {
-            // $insert[] = ['id' => $this->uniqId(), 'tag' => $val];
             $query->bindValue($i++, $this->uniqId(), \PDO::PARAM_INT);
             $query->bindValue($i++, $val, \PDO::PARAM_STR);
         }
@@ -277,7 +276,7 @@ class Db extends \PDO
      * @access public
      * @return string
      */
-    public function createComment($articleId, $comment, $name)
+    public function createComment($articleId, $comment, $name, $parentId)
     {
             $session = Session::sharedSession();
             if ($session->isLogIn()) {
@@ -287,12 +286,17 @@ class Db extends \PDO
                 $userId = null;
             }
 
-            $query = $this->prepare('INSERT INTO comments (id, comment, article_id, user_id, user_name, create_date)
-                                    VALUES (:id, :comment, :article_id, :user_id, :user_name, :create_date)');
+            if (empty($parentId)) {
+                $parentId = null;
+            }
+
+            $query = $this->prepare('INSERT INTO comments (id, comment, article_id, parent_id, user_id, user_name, create_date)
+                                    VALUES (:id, :comment, :article_id, :parent_id, :user_id, :user_name, :create_date)');
             $data = [
                 ':id' => $this->uniqId(),
                 ':comment' => $comment,
                 ':article_id' => $articleId,
+                ':parent_id' => $parentId,
                 ':user_id' => $userId,
                 ':user_name' => $name,
                 ':create_date' => gmdate('Y-m-d H:i:s')
@@ -311,7 +315,8 @@ class Db extends \PDO
      */
     public function comments($articleId)
     {
-        $sql = 'SELECT comments.comment AS comment, COALESCE(users.name, comments.user_name) AS author, comments.create_date AS createDate
+        $sql = 'SELECT comments.id AS id, comments.comment AS comment, COALESCE(users.name, comments.user_name) AS author,
+                comments.create_date AS createDate, comments.parent_id AS parent_id
                 FROM comments
                 LEFT JOIN users ON users.id = comments.user_id
                 WHERE comments.article_id = :article_id
@@ -322,9 +327,18 @@ class Db extends \PDO
         $query->bindParam(':article_id', $articleId);
         $query->execute();
 
-        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
-        if ($result) {
-            return $result;
+        $comments = [];
+        // comment hierarchy
+        while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
+            if ($row['parent_id']) {
+                $comments[$row['parent_id']]['childs'][] = $row;
+            } else {
+                $comments[$row['id']] = $row;
+            }
+        }
+
+        if (!empty($comments)) {
+            return array_values($comments);
         }
 
         return [];

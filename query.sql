@@ -39,6 +39,7 @@ CREATE TABLE comments (
     id CHAR(36) NOT NULL,
     comment TEXT NOT NULL,
     article_id CHAR(36) NOT NULL,
+    parent_id CHAR(36) NULL,
     user_id CHAR(36) NULL,
     user_name CHAR(255) NULL,
     create_date DATETIME NOT NULL,

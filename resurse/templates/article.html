@@ -28,6 +28,7 @@
                                     comments = $('<div></div>');
 
                                 $.each(data.result, function(key, value) {
+                                    console.log(value);
                                     comments.append(App.articles.Comment(value));
                                 });
 
@@ -71,7 +72,8 @@
                         data: {
                             name: name,
                             comment: comment,
-                            articleId: '{{article.id}}'
+                            articleId: '{{article.id}}',
+                            parentId: ''
                         },
                         success: function (data, status, request) {
                             if (data.status === 'ok') {
@@ -103,6 +105,8 @@
                 <pre>{{article.content}}</pre>
                 <div>Tags: {{article.tags|upper}}</div>
             </div>
+            <div class="container comments js-comments">
+            </div>
             <div class="container comment-form">
                 <h3>Comment</h3>
                 <div class="pure-form pure-form-stacked">
@@ -112,8 +116,6 @@
                     <textarea id="user-comment" class="js-comment"></textarea>
                     <button class="pure-button pure-button-primary js-add-button-click">Add</button>
                 </div>
-            </div>
-            <div class="container comments js-comments">
             </div>
         </div>
         {% include 'footer.html' %}

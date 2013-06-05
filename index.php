@@ -61,8 +61,9 @@ $app->get('/create', function () use ($app) {
 });
 
 // install aplication
-$app->get('/install', function () {
+$app->get('/install', function () use ($app) {
     // @todo implement
+    $app->notFound();
 });
 
 // article details
@@ -103,12 +104,12 @@ $app->post('/api/:action', function ($action) use ($app) {
 
 // error page
 $app->error(function (\Exception $e) use ($app) {
-    $app->render('error.html');
+    $app->render('error.html', ['resurse' => Configuration::PAGES_RESURSE_PATH]);
 });
 
 // page not found
 $app->notFound(function () use ($app) {
-    $app->render('404.html');
+    $app->render('404.html', ['resurse' => Configuration::PAGES_RESURSE_PATH]);
 });
 
 $app->run();

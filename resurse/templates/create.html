@@ -5,6 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <script type="text/javascript" src="{{resurse}}/js/jquery-2.0.0.min.js"></script>
         <script type="text/javascript" src="{{resurse}}/js/default.js"></script>
+        <script type="text/javascript" src="{{resurse}}/js/create.js"></script>
         <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/base-min.css">
         <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/buttons-min.css">
         <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/forms-min.css">
@@ -12,65 +13,17 @@
         <link href="{{resurse}}/css/default.css" rel="stylesheet" type="text/css">
         <link href="{{resurse}}/css/create.css" rel="stylesheet" type="text/css">
         <script type="text/javascript">
-            $(document).ready(function ($) {
-                var errorMessage = new App.message.Error();
-                $('.js-save-button-click').click(function () {
-                    var button = $(this).attr('disabled', 'disabled'),
-                        title = $('.js-title').val(),
-                        article = $('.js-article').val(),
-                        tags = $('.js-tags').val(),
-                        hasError = false;
-                    errorMessage.hide();
-                    if (title.length === 0 && title !== ' ') {
-                        errorMessage.addMessage('Title field cannot be empty or space filled.');
-                        hasError = true;
-                    }
-
-                    if (hasError) {
-                        errorMessage.show();
-                        button.removeAttr('disabled');
-                        return false;
-                    }
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{api}}/create-article',
-                        data: {
-                            title: title,
-                            article: article,
-                            tags: tags
-                        },
-                        success: function (data, status, request) {
-                            if (data.status === 'ok') {
-                                window.location = '/';
-                            } else if (data.reason === 'access-denied') {
-                                window.location = '/login';
-                            } else {
-                                errorMessage.show('Error Sending Data.');
-                            }
-                            button.removeAttr('disabled');
-                        },
-                        error: function () {
-                            button.removeAttr('disabled');
-                            errorMessage.show('Error Sending Data.');
-                        }
-                    });
-                });
-
-                $('.js-cancel-button-click').click(function () {
-                    window.location = '/';
-                });
-            });
+            App.apiPath = '{{api}}';
         </script>
     </head>
     <body>
         {% include 'header.html' %}
         <div id="content">
             <div class="container create-form">
-                <input type="text" class="article-title js-title" placeholder="Title...">
-                <textarea class="article-body js-article"></textarea>
+                <input type="text" class="article-title js-title" placeholder="Title">
+                <textarea placeholder="Article" class="article-body js-article"></textarea>
                 <div class="info">Separate tags with space.</div>
-                <input type="text" class="article-tags js-tags" placeholder="Tags...">
+                <input type="text" class="article-tags js-tags" placeholder="Tags">
                 <button class="pure-button pure-button-primary js-save-button-click">Save</button>
                 <button class="pure-button pure-button-primary js-cancel-button-click">Cancel</button>
             </div>

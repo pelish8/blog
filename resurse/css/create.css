@@ -1,46 +1,44 @@
-
 .create-form input {
-    display: block;
-    width: inherit;
-    height: 36px;
-    border: solid 1px #d5d5d5;
-    outline: 1;
-    outline-style: none;
-    outline-width: 0;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: 18px;
+	display: block;
+	width: inherit;
+	height: 36px;
+	border: solid 1px #d5d5d5;
+	outline: 1;
+	outline-style: none;
+	outline-width: 0;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 18px;
 }
 
 .create-form textarea {
-    display: block;
-    width: inherit;
-    height: 300px;
-    margin-top: 15px;
-    border: solid 1px #d5d5d5;
-    outline: 0;
-    outline-style: none;
-    outline-width: 0;
-    resize: vertical;
-    padding: 10px;
-    font-size: 16px;
+	display: block;
+	width: inherit;
+	height: 300px;
+	margin-top: 15px;
+	border: solid 1px #d5d5d5;
+	outline: 0;
+	outline-style: none;
+	outline-width: 0;
+	-webkit-resize: vertical;
+	-moz-resize: vertical;
+	resize: vertical;
+	padding: 10px;
+	font-size: 16px;
 }
 
 .create-form button {
-    margin-top: 10px;
-    margin-right: 10px;
-/*    line-height: 1.7em;*/
-    width: 130px;
-/*    height: 2em;*/
-/*    font-size: 1em;*/
+	margin-top: 10px;
+	margin-right: 10px;
+	width: 130px;
 }
 
 .create-form h1 {
-    text-align: center;
+	text-align: center;
 }
 
 .create-form div.info {
-    font-size: 10px;
-    margin-top: 5px;
-    margin-bottom: 3px;
+	font-size: 10px;
+	margin-top: 5px;
+	margin-bottom: 3px;
 }

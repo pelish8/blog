@@ -13,51 +13,7 @@
         <link href="{{resurse}}/css/default.css" rel="stylesheet" type="text/css">
         <link href="{{resurse}}/css/login.css" rel="stylesheet" type="text/css">
         <script type="text/javascript">
-            $(document).ready(function () {
-                var errorMessage = new App.message.Error();
-                $('.js-log-in-button').click(function () {
-                    var button = $(this).attr('disabled', 'disabled'),
-                        email = $('.js-email').val(),
-                        password = $('.js-password').val(),
-                        hasError = false;
-
-                    errorMessage.hide();
-                    if (!App.validate.email(email)) {
-                        errorMessage.addMessage('Please provide a valid email address.');
-                        hasError = true;
-                    }
-
-                    if (hasError) {
-                        errorMessage.show();
-                        button.removeAttr('disabled');
-                        return;
-                    }
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{api}}/login',
-                        data: {
-                            email: email,
-                            password: password
-                        },
-                        success: function (data, status, request) {
-                            if (data.status === 'ok') {
-                                document.location = '/login';
-                            } else if (data.reason === 'invalid-credentials') {
-                                errorMessage.show('Your email or password were incorrect.');
-                            } else {
-                                errorMessage.show('Error Sending Data.');
-                            }
-                            button.removeAttr('disabled');
-                        },
-                        error: function () {
-                            button.removeAttr('disabled');
-                            // errorMessage.show('Error Sending Data.');
-                        }
-                    });
-
-                });
-            });
+            App.apiPath = '{{api}}';
         </script>
     </head>
     <body>
@@ -66,8 +22,8 @@
             <div class="container">
                 <form class="pure-form pure-form-stacked login-form">
                     <fieldset class="pure-group">
-                        <input type="email" placeholder="Email" class="first js-email" value="pelish8@gmail.com">
-                        <input type="password" placeholder="Password" class="last js-password" value="srce1244">
+                        <input type="email" placeholder="Email" class="first js-email" value="">
+                        <input type="password" placeholder="Password" class="last js-password" value="">
                         <button class="pure-button pure-button-primary js-log-in-button">Log In</button>
                     </fieldset>
                 </form>

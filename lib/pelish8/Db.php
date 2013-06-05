@@ -285,7 +285,7 @@ class Db extends \PDO
             } else {
                 $userId = null;
             }
-
+        
             if (empty($parentId)) {
                 $parentId = null;
             }
@@ -327,14 +327,25 @@ class Db extends \PDO
         $query->bindParam(':article_id', $articleId);
         $query->execute();
 
+        $start = microtime(true);
         $comments = [];
-        // comment hierarchy
+        $keyToRemove = [];
+
         while ($row = $query->fetch(\PDO::FETCH_ASSOC)) {
-            if ($row['parent_id']) {
-                $comments[$row['parent_id']]['childs'][] = $row;
+            $comments[$row['id']] = $row;
+        }
+        // comment hierarchy
+        foreach ($comments as &$row) {
+            if ($row['parent_id'] != 0) {
+                $comments[$row['parent_id']]['children'][] = &$row;
+                $keyToRemove[] = $row['id'];
             } else {
                 $comments[$row['id']] = $row;
             }
+        }
+        // remove children comments from array root
+        foreach ($keyToRemove as $key) {
+            unset($comments[$key]);
         }
 
         if (!empty($comments)) {

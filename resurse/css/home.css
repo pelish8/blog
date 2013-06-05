@@ -1,42 +1,49 @@
+.posts {
+	min-height: 100px;
+}
+
 .posts h3 {
-    font-size: 32px;
-    margin: 2px;
-    color: #333332;
-    line-height: 38px;
+	font-size: 32px;
+	margin: 2px;
+	color: #333332;
+	line-height: 38px;
 }
 
 .posts h3 a {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 .posts .post {
-    box-shadow: 0px 3px 8px #aaa;
-    background-color: #fff;
-    border: solid 1px #d5d5d5;
-    margin-bottom: 10px;
-    padding: 7px;
+	-webkit-box-shadow: 0px 3px 8px #aaa;
+	box-shadow: 0px 3px 8px #aaa;
+	background-color: #fff;
+	border: solid 1px #d5d5d5;
+	margin-bottom: 10px;
+	padding: 7px;
 }
 
 .posts .author {
-    color: #B3B3B1;
-    font-size: 16px;
-    line-height: 19px;
+	color: #B3B3B1;
+	font-size: 16px;
+	line-height: 19px;
 }
 
 .posts .content {
-    font-size: 14px;
-    background-color: #fff;
-    white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -pre-wrap;
-    white-space: -o-pre-wrap;
-    word-wrap: break-word;
-    font-size: 18px;
+	font-size: 14px;
+	background-color: #fff;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+	font-size: 18px;
 }
 
 .pagination {
-    margin: 5px auto;
-    padding: 5px 0;
-    box-shadow: 0px 3px 8px #aaa;
-    background-color: #fff;
+	margin: 5px auto;
+	padding: 5px 0;
+
+	-webkit-box-shadow: 0px 3px 8px #aaa;
+	box-shadow: 0px 3px 8px #aaa;
+	background-color: #fff;
 }

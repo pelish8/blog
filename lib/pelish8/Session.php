@@ -27,7 +27,7 @@ class Session
         session_cache_limiter('nocache');
         session_start();
 
-        // set timeout session
+        // set session timeout
     }
 
     /**

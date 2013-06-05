@@ -91,18 +91,34 @@
         $(target).empty();
         $(target).html(html);
     };
-
-    app.articles.Comment = function (comment) {
-        var comment = $('<div class="comment" ><div class="author">' +
-            $('<div></div>').text(comment.author).html() +
-            '</div><div class="create-date">' +
-            $('<div></div>').text(comment.createDate).html() +
-            '</div>' +
-            '<pre>' +
-            $('<div></div>').text(comment.comment).html() +
-            '</pre></div>');
-
-        return comment;
+    app.articles.comments = {};
+    app.articles.comments.comment = function (comment, margin, returnText) {
+        if (!margin) {
+            margin = 0;
+        }
+        if (typeof returnText === 'undefined') {
+            returnText = false;
+        }
+        var element = '<div id=' + comment.id + ' class="comment" style="margin-left: ' + margin + 'px;" >';
+            element += '<a href="javascript:void(0)" class="js-replay replay" comment-id="' + comment.id + '">replay</a>';
+            element += '<div class="author">';
+            element += $('<div></div>').text(comment.author).html();
+            element += '</div><div class="create-date">';
+            element += $('<div></div>').text(comment.createDate).html();
+            element += '</div><pre>';
+            element += $('<div></div>').text(comment.comment).html();
+            element += '</pre></div>';
+            
+        var length = (comment.children) ? comment.children.length : 0;
+        if (length > 0) {
+            for (var i = 0; i < length; i++) {
+                element += App.articles.comments.comment(comment.children[i], margin + 20, true);
+            }
+        }
+        if (returnText) {
+            return element;
+        }
+        return $(element);
     };
 
     global.App = app;

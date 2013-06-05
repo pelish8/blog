@@ -82,13 +82,13 @@ abstract class AbstractApi
                 $response = $this->errorResponse(self::NOT_FOUND);
             }
 
-        } catch (Exception\InvalidParam $e) { // @TO_DO implement
+        } catch (Exception\InvalidParam $e) {
             $response = $this->errorResponse(self::INVALID_PARAMS);
         } catch (\PDOException $e) {
-            echo  'message: ' .$e->getMessage() . ' code: ' . $e->getCode() . ' file: ' . $e->getFile() . ' line: ' . $e->getLine();
+            // log  'message: ' .$e->getMessage() . ' code: ' . $e->getCode() . ' file: ' . $e->getFile() . ' line: ' . $e->getLine();
             $response = $this->errorResponse(self::DATABASE_ERROR);
         } catch (\Exception $e) {
-            echo 'message: ' . $e->getMessage() . ' file: ' . $e->getFile() . ' line: ' . $e->getLine();
+            // log 'message: ' . $e->getMessage() . ' file: ' . $e->getFile() . ' line: ' . $e->getLine();
             $response = $this->errorResponse(self::ERROR_SENDING_DATA);
         }
 

@@ -285,7 +285,7 @@ class Db extends \PDO
             } else {
                 $userId = null;
             }
-        
+
             if (empty($parentId)) {
                 $parentId = null;
             }

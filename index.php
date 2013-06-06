@@ -104,12 +104,12 @@ $app->post('/api/:action', function ($action) use ($app) {
 
 // error page
 $app->error(function (\Exception $e) use ($app) {
-    $app->render('error.html', ['resurse' => Configuration::PAGES_RESURSE_PATH]);
+    $app->render('error.html', ['resources' => Configuration::PAGES_RESOURCES_PATH]);
 });
 
 // page not found
 $app->notFound(function () use ($app) {
-    $app->render('404.html', ['resurse' => Configuration::PAGES_RESURSE_PATH]);
+    $app->render('404.html', ['resources' => Configuration::PAGES_RESOURCES_PATH]);
 });
 
 $app->run();

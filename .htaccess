@@ -8,7 +8,7 @@ RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]
-RedirectMatch 403 ^.*/resurse/templates/(.*)$
+RedirectMatch 403 ^.*/resources/templates/(.*)$
 RedirectMatch 403 ^.*/lib/(.*)$
 RedirectMatch 403 ^.*/cache/(.*)$
 RedirectMatch 403 ^.*/vendor/(.*)$

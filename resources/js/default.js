@@ -100,7 +100,7 @@
             returnText = false;
         }
         var element = '<div id=' + comment.id + ' class="comment" style="margin-left: ' + margin + 'px;" >';
-            element += '<a href="javascript:void(0)" class="js-replay replay" comment-id="' + comment.id + '">replay</a>';
+            element += '<a href="javascript:void(0)" class="js-reply reply" comment-id="' + comment.id + '">reply</a>';
             element += '<div class="author">';
             element += $('<div></div>').text(comment.author).html();
             element += '</div><div class="create-date">';
@@ -108,7 +108,7 @@
             element += '</div><pre>';
             element += $('<div></div>').text(comment.comment).html();
             element += '</pre></div>';
-            
+
         var length = (comment.children) ? comment.children.length : 0;
         if (length > 0) {
             for (var i = 0; i < length; i++) {

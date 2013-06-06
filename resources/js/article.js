@@ -31,7 +31,7 @@ $(document).ready(function () {
     };
 
     addComments();
-    
+
     var saveComment = function (name, comment, parentId) {
         $.ajax({
             type: 'POST',
@@ -65,7 +65,7 @@ $(document).ready(function () {
                 '<textarea class="js-comment"></textarea>' +
                 '<button class="pure-button pure-button-primary js-add-button-click">Add</button>' +
                 '<button class="pure-button pure-button-primary js-close-button-click close">Close</button></div>';
-        
+
             return $(element);
     }
         $(document).on('click', '.js-add-button-click', function () {
@@ -98,7 +98,7 @@ $(document).ready(function () {
             return false;
         });
 
-        $(document).on('click', '.js-replay', function () {
+        $(document).on('click', '.js-reply', function () {
             var commentId = $(this).attr('comment-id'),
                 parent = $(this).parent(),
                 isActive = parent.find('.comment-form').attr('active');
@@ -106,7 +106,7 @@ $(document).ready(function () {
                 var form = getAddCometForm(commentId);
                 form.attr('active', 'active');
                 $(this).parent().append(form);
-            } 
+            }
             return false;
         });
 
@@ -117,7 +117,7 @@ $(document).ready(function () {
                 var form = getAddCometForm('');
                 form.attr('active', 'active');
                 $(this).parent().append(form);
-            } 
+            }
             return false;
         });
 

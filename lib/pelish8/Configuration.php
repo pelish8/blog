@@ -32,4 +32,5 @@ class Configuration
     const DATE_FORMAT = 'd/m/Y G:i';
 
     const SESSION_TIMEOUT = 1800; // seconds
+    const SESSION_REGENERATE_TIME = 1200;
 }

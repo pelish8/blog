@@ -38,7 +38,7 @@ class Session
 
         if (!$this->exist('sessionCreated')) {
             $this->set('sessionCreated', time());
-        } else if (time() - $this->get('sessionCreated') > Configuration::SESSION_TIMEOUT) {
+        } else if (time() - $this->get('sessionCreated') > Configuration::SESSION_REGENERATE_TIME) {
             session_regenerate_id(true);
             $this->set('sessionCreated', time());
         }

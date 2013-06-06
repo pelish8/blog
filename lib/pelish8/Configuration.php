@@ -30,4 +30,6 @@ class Configuration
     const SECURITY_SALT = 'le50OYVCY&Qfc5e4e3ab0.2f99cd0a3jd30f8778502b5801ad7I303f6f4b4P4d5394b98ydedd55d09Vac6eab78c,04cb30124Dca1f51d72|2656934f9|2aba41';
 
     const DATE_FORMAT = 'd/m/Y G:i';
+
+    const SESSION_TIMEOUT = 1800; // seconds
 }

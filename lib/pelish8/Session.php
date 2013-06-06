@@ -24,10 +24,24 @@ class Session
      */
     protected function __construct()
     {
+        ini_set('session.gc-maxlifetime', Configuration::SESSION_TIMEOUT);
         session_cache_limiter('nocache');
         session_start();
 
         // set session timeout
+        if ($this->exist('sessionLastActivity') && (time() - $this->get('sessionLastActivity') > Configuration::SESSION_TIMEOUT)) {
+            session_unset();
+            session_destroy();
+        }
+
+        $this->set('sessionLastActivity', time());
+
+        if (!$this->exist('sessionCreated')) {
+            $this->set('sessionCreated', time());
+        } else if (time() - $this->get('sessionCreated') > Configuration::SESSION_TIMEOUT) {
+            session_regenerate_id(true);
+            $this->set('sessionCreated', time());
+        }
     }
 
     /**
@@ -141,8 +155,8 @@ class Session
      */
     public function userLogOut()
     {
-        $this->destroy(Configuration::SESSIN_USER_LOG_IN_ID);
-        $this->destroy(Configuration::SESSIN_USER_NAME);
+        session_unset();
+        session_destroy();
     }
 
     /**
